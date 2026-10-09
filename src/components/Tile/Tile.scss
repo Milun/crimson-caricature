@@ -6,4 +6,7 @@
 
     border: var(--tile-border-width) var(--tile-border-color) solid;
 
+    // The tile should always be a square.
+    aspect-ratio: 1;
+    height: auto;
 }

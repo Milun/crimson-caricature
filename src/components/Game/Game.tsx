@@ -6,6 +6,9 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import clsx from "clsx";
 
 import Tile, { type TileProps } from "../Tile";
+import Board from "../Board";
+
+import './Game.scss';
 
 type StageProps = {
     letter: string;
@@ -51,14 +54,24 @@ export default function Game({}: GameProps) {
                 "game"
             )}
         >
-            {STAGES.map((stage, idx) => {
-                return (
-                    <Tile
-                        letter={stage.letter}
-                        index={idx}
-                    />
-                );
-            })}
+            <header className="p-4">
+                HEADER TBA
+            </header>
+            <div className="p-4">
+                <Board
+                    columnCount={10}
+                >
+                    {STAGES.map((stage, idx) => {
+                        return (
+                            <Tile
+                                key={idx}
+                                letter={stage.letter}
+                                index={idx}
+                            />
+                        );
+                    })}
+                </Board>
+            </div>
         </div>
     </>
 }

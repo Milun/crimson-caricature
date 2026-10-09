@@ -11,7 +11,7 @@ export type TileProps = {
     letter: string,     // A-Z,
     index: number,      // When this === gameState's index, this tile is the one which should be chosen.
 };
-export default function Letter({
+export default function Tile({
     letter,
     index
 }: TileProps) {
