@@ -22,7 +22,9 @@ export default function Tile({
                 "tile"
             )}
         >
-            {letter}
+            <div className="tile__content">
+                {letter}
+            </div>
         </div>
     </>
 }

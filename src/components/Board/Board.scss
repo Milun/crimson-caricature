@@ -8,9 +8,6 @@
     grid-template-columns: repeat(auto-fill, minmax(10%, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(10%, 1fr));
 
-    background: rgb(248, 230, 248);
-    border: 1px dotted magenta;
-
     // Tiles within each cell should be half is width.
     &__item {
         width: 50%;
