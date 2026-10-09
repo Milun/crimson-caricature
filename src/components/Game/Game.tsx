@@ -7,6 +7,7 @@ import clsx from "clsx";
 
 import Tile, { type TileProps } from "../Tile";
 import Board from "../Board";
+import MotionOverlay from "../MotionOverlay";
 
 import './Game.scss';
 
@@ -73,5 +74,6 @@ export default function Game({}: GameProps) {
                 </Board>
             </div>
         </div>
+        <MotionOverlay />
     </>
 }
