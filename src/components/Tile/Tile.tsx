@@ -2,8 +2,9 @@
  * Generic wrapper for each letter tile
  */
 
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, type MouseEvent } from "react";
 import clsx from "clsx";
+import { useMatter } from "../Matter";
 
 import "./Tile.scss";
 
@@ -16,13 +17,23 @@ export default function Tile({
     index
 }: TileProps) {
 
+    const {addBalloon} = useMatter();
+
+    function handleClick(event:MouseEvent<HTMLElement>) {
+
+        addBalloon(0,0);
+    }
+
     return <>
         <div
             className={clsx(
                 "tile"
             )}
+            onClick={handleClick}
         >
-            <div className="tile__content">
+            <div 
+                className="tile__content"
+            >
                 {letter}
             </div>
         </div>

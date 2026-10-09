@@ -7,7 +7,7 @@ import clsx from "clsx";
 
 import Tile, { type TileProps } from "../Tile";
 import Board from "../Board";
-import MotionOverlay from "../MotionOverlay";
+import {MatterScope} from "../Matter";
 
 import './Game.scss';
 
@@ -59,21 +59,22 @@ export default function Game({}: GameProps) {
                 HEADER TBA
             </header>
             <div className="p-4">
-                <Board
-                    columnCount={10}
-                >
-                    {STAGES.map((stage, idx) => {
-                        return (
-                            <Tile
-                                key={idx}
-                                letter={stage.letter}
-                                index={idx}
-                            />
-                        );
-                    })}
-                </Board>
+                <MatterScope>
+                    <Board
+                        columnCount={10}
+                    >
+                        {STAGES.map((stage, idx) => {
+                            return (
+                                <Tile
+                                    key={idx}
+                                    letter={stage.letter}
+                                    index={idx}
+                                />
+                            );
+                        })}
+                    </Board>
+                </MatterScope>
             </div>
         </div>
-        <MotionOverlay />
     </>
 }
