@@ -29,9 +29,11 @@ export {MatterContext};
 
 type MatterScopeProps = {
     children: React.ReactNode;
+    enabled?: boolean
 };
 export function MatterScope({
     children,
+    enabled = true
 }: MatterScopeProps) {
 
     const matterRef = useRef<HTMLDivElement>(null);
@@ -57,6 +59,7 @@ export function MatterScope({
     // Initial MotionJS setup.
     useEffect(() => {
 
+        if (!enabled) return;
         if (!matterRef.current) return;
 
         const w = matterRef.current.clientWidth;
@@ -103,7 +106,7 @@ export function MatterScope({
             if (engine.current) Engine.clear(engine.current);
             render.canvas.remove();
         };
-    }, []);
+    }, [enabled]);
 
     return (
         <MatterProvider value={value}>

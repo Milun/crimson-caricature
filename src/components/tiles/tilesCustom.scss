@@ -1,0 +1,9 @@
+// Define letter-specific tile styles here.
+
+.tile {
+
+    // L
+    &--l {
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
