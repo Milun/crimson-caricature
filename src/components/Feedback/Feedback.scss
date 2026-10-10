@@ -1,0 +1,11 @@
+.feedback {
+    position: absolute;
+    inset: 0;
+
+    transition: opacity 1s ease;
+
+    &.is-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+}

@@ -5,6 +5,7 @@
 import { useRef, useState, useEffect, useCallback, type MouseEvent } from "react";
 import clsx from "clsx";
 import { useMatter } from "../Matter";
+import { useGame } from "../Game/useGameState";
 
 import "./Tile.scss";
 import "../tiles/tilesCustom.scss";
@@ -30,18 +31,34 @@ export default function Tile({
     style
 }: TileProps) {
 
+    const {
+        activeStageIdx,
+        showFeedback
+    } = useGame();
     const {addBalloon} = useMatter();
+
+    const isCorrect = activeStageIdx === index; 
 
     function handleClick(event:MouseEvent<HTMLElement>) {
 
-        if (onClick?.(event, false) === false) return; // Prevent default callback if custom event returns false.
-        addBalloon({
-            src: 'game/balloons/oops.png',
-            x: event.clientX,
-            y: event.clientY,
-            width: 100,
-            height: 35,
-        });
+        if (onClick?.(event, isCorrect) === false) return; // Prevent default callback if custom event returns false.
+
+        if (!isCorrect) {
+            addBalloon({
+                src: 'game/balloons/oops.png',
+                x: event.clientX,
+                y: event.clientY,
+                width: 100,
+                height: 35,
+            });
+        }
+        else {
+            myShowFeedback();
+        }
+    }
+
+    function myShowFeedback() {
+        showFeedback(name);
     }
 
     return <>

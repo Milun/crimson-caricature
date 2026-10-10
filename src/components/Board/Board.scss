@@ -8,10 +8,17 @@
     grid-template-columns: repeat(auto-fill, minmax(10%, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(10%, 1fr));
 
+    transition: opacity 1s ease;
+
     // Tiles within each cell should be half is width.
     &__item {
         width: 50%;
         align-self: center;
         justify-self: center;
+    }
+
+    &.is-hidden {
+        opacity: 0;
+        pointer-events: none;
     }
 }

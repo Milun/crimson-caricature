@@ -3,8 +3,9 @@
  * Can be set to create fixed shapes.
  */
 
-import { useRef, useState,useEffect, useCallback, Children } from "react";
+import { useRef, useState, useEffect, useCallback, Children, useMemo } from "react";
 import clsx from "clsx";
+import { useGame } from "../Game/useGameState";
 
 import "./Board.scss";
 
@@ -53,18 +54,20 @@ export default function Board({
     const gridTemplateColumns = `repeat(${columnCount}, 1fr)`;
     const gridTemplateRows = rowCount ? `repeat(${rowCount}, 1fr)` : '';
 
-    function renderItems() {
+    const gridAreas = useMemo(() => {
 
-        const allCells: { 
-            row: number; 
+        if (!rowCount) return [];
+
+        const allCells: {
+            row: number;
             col: number;
             offsetX: number,
             offsetY: number
         }[] = [];
         for (let r = 1; r <= rowCount; r++) {
             for (let c = 1; c <= columnCount; c++) {
-                allCells.push({ 
-                    row: r, 
+                allCells.push({
+                    row: r,
                     col: c,
                     offsetX: Math.random() - 0.5,
                     offsetY: Math.random() - 0.5
@@ -77,28 +80,9 @@ export default function Board({
             [allCells[i], allCells[j]] = [allCells[j], allCells[i]];
         }
 
-        const gridAreas = allCells.slice(0, tiles.length);
+        return allCells.slice(0, tiles.length);
 
-        return <>
-            {tiles.map((tile, idx) => {
-
-                const ga = gridAreas[idx];
-
-                return (
-                    <div 
-                        key={idx}
-                        className="board__item"
-                        style={{
-                            gridArea: `${ga.row} / ${ga.col}`,
-                            transform: `translate(${ga.offsetX*100}%, ${ga.offsetY*100}%)`
-                        }}
-                    >
-                        {tile}
-                    </div>
-                )
-            })}
-        </>
-    }
+    }, [rowCount, columnCount, seed, tiles.length]);
 
 
     return <>
@@ -112,7 +96,22 @@ export default function Board({
                 gridTemplateRows: gridTemplateRows
             }}
         >
-            {rowCount && renderItems()}
+            {tiles.map((tile, idx) => {
+                const ga = gridAreas[idx];
+                if (!ga) return null;
+                return (
+                    <div
+                        key={idx}
+                        className="board__item"
+                        style={{
+                            gridArea: `${ga.row} / ${ga.col}`,
+                            transform: `translate(${ga.offsetX*100}%, ${ga.offsetY*100}%)`
+                        }}
+                    >
+                        {tile}
+                    </div>
+                );
+            })}
         </div>
     </>
 }
