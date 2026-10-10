@@ -8,16 +8,20 @@
  * Normal
  */
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import Tile, {type TileProps} from "../Tile";
+import { useMatter } from "../Matter";
 
 export default function TileL({
     ...props
 }: TileProps) {
 
+    const {addBalloon} = useMatter();
     const [offset, setOffset] = useState<{x:number, y:number}>({x: 0, y: 0});
 
-    function handleClick(isCorrect:boolean) {
+    const [clickCount, setClickCount] = useState(0);
+
+    function handleClick(event:MouseEvent<HTMLElement>, isCorrect:boolean) {
 
         // Pick a random direction to run away from the cursor.
         const off = {...offset};
@@ -25,6 +29,16 @@ export default function TileL({
         off.x += Math.cos(r);
         off.y += Math.sin(r);
         setOffset(off);
+
+        addBalloon({
+            src: `game/balloons/${clickCount%2 ? 'hehehe' : 'hahaha'}.png`,
+            x: event.clientX,
+            y: event.clientY,
+            width: 140,
+            height: 30,
+        });
+
+        setClickCount(clickCount+1);
 
         return false; // Prevent default.
     }

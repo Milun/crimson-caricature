@@ -5,8 +5,15 @@
 import { createContext, useContext, useState, useCallback, useEffect, useMemo, useId, useRef } from 'react';
 import { Engine, Render, Runner, Bodies, Composite } from "matter-js";
 
+type BalloonProps = {
+    src: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+}
 type MatterContextProps = {
-    addBalloon: (x: number, y:number) => void;
+    addBalloon: (props:BalloonProps) => void;
 }
 import "./Matter.scss";
 
@@ -39,15 +46,22 @@ export function MatterScope({
     const matterRef = useRef<HTMLDivElement>(null);
     const engine = useRef<Engine>(null);
 
-    const addBalloon = useCallback((x: number, y: number) => {
+    const addBalloon = useCallback((props:BalloonProps) => {
+
+        const {
+            src,
+            x, y, 
+            width, height
+        } = props;
+
         // Add balloon here.
         if (!engine.current) return;
-        const boxA = Bodies.rectangle(400, 200, 80, 80, {
+        const boxA = Bodies.rectangle(x, y, width, height, {
             render: {
                 sprite: {
-                    texture: '/hero.png',
-                    xScale: 0.1,
-                    yScale: 0.1
+                    texture: src,
+                    xScale: 1,
+                    yScale: 1
                 }
             }
         });
@@ -83,12 +97,10 @@ export function MatterScope({
         });
 
         // create two boxes and a ground
-        const boxA = Bodies.rectangle(400, 200, 80, 80);
-        const boxB = Bodies.rectangle(450, 50, 80, 80);
         const ground = Bodies.rectangle(w/2, -10, w*1.25, 20, { isStatic: true });
 
         // add all of the bodies to the world
-        Composite.add(engine.current.world, [boxA, boxB, ground]);
+        Composite.add(engine.current.world, [ground]);
 
         // run the renderer
         Render.run(render);

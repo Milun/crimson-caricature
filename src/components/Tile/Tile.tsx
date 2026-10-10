@@ -16,7 +16,7 @@ export type TileProps = {
     
     children?: React.ReactNode,
     imgSrc?: string,                            // Image to use (for generic tiles)
-    onClick?: (isCorrect:boolean) => boolean    // Custom onClick event. Return false to prevent the tile's default click event.
+    onClick?: (event:MouseEvent<HTMLElement>, isCorrect:boolean) => boolean    // Custom onClick event. Return false to prevent the tile's default click event.
     style?: React.CSSProperties
 };
 export default function Tile({
@@ -34,8 +34,14 @@ export default function Tile({
 
     function handleClick(event:MouseEvent<HTMLElement>) {
 
-        if (onClick?.(false) === false) return; // Prevent default callback if custom event returns false.
-        addBalloon(0,0);
+        if (onClick?.(event, false) === false) return; // Prevent default callback if custom event returns false.
+        addBalloon({
+            src: 'game/balloons/oops.png',
+            x: event.clientX,
+            y: event.clientY,
+            width: 100,
+            height: 35,
+        });
     }
 
     return <>
