@@ -27,6 +27,27 @@ export default function Background() {
             <BackgroundItem src={'game/bgs/bg-meatloaf-scary.jpg'} active={activeStageIdx > 20} />
             <BackgroundItem src={'game/bgs/bg-vinny.jpg'} active={indexToLetter(activeStageIdx) === 'v'} />
         </div>
+
+        {/* Fake Muppet RaceMania loading bar. */}
+        <div 
+            className='beaker'
+            style={{
+                // Start off hidden for a few rounds
+                transform: `translateY(${(Math.max(0, 1-(activeStageIdx/5))) * 50}%)`
+            }}
+        >
+            <img 
+                className='beaker__main'
+                src={'game/main/beaker-main.png'}
+                style={{
+                    transform: `translateY(${(1-(activeStageIdx/25)) * 60}%)`
+                }}
+            />
+            <img 
+                className='beaker__base'
+                src={'game/main/beaker-base.png'} 
+            />
+        </div>
     </div>
 }
 

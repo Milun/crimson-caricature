@@ -13,6 +13,7 @@ import {MatterScope} from "../Matter";
 import {GameProvider, useGame} from "./useGameState";
 import Banner from "../Banner.tsx";
 
+import TileI from "../tiles/TileI";
 import TileL from "../tiles/TileL";
 
 import './Game.scss';
@@ -31,7 +32,7 @@ const STAGES:StageProps[] = [
     { letter: "F", phrase: "In the future, there's a Jeff. But for now what starts with", tile: <Tile letter="F" name="F" index={5} /> },
     { letter: "G", phrase: "Why did I come up with one for each of these? It ain't so hard, now look for", tile: <Tile letter="G" name="Gumi-chan" index={6} imgSrc="game/g.jpg" /> },
     { letter: "H", phrase: ".........the fuck rhymes with", tile: <Tile letter="H" name="H" index={7} /> },
-    { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <Tile letter="I" name="I" index={8} /> },
+    { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <TileI letter="I" name="I" index={8} /> },
     { letter: "J", phrase: "Please be quick, don't spend all day, looking for the letter", tile: <Tile letter="J" name="J" index={9} /> },
     { letter: "K", phrase: "I've run out of things to say, while I think, go find the", tile: <Tile letter="K" name="K" index={10} /> },
     { letter: "L", phrase: "You're half way there, and doing swell. Now what starts wth the letter", tile: <TileL letter="L" name="Laughing Gnome" index={11} /> },
@@ -57,7 +58,8 @@ const STAGES:StageProps[] = [
 function GameMain() {
 
     const {
-        feedbackActive
+        feedbackActive,
+        activeStageIdx
     } = useGame();
 
     return <>
@@ -81,9 +83,10 @@ function GameMain() {
                             )}
                         >
                             <Board
-                                columnCount={9}
+                                columnCount={8 - Math.floor(activeStageIdx/6)}
                             >
                                 {STAGES.map((stage, idx) => {
+                                    if (idx < activeStageIdx) return;
                                     return (
                                         <React.Fragment key={idx}>
                                             {stage.tile}

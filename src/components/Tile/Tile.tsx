@@ -41,17 +41,19 @@ export default function Tile({
     const isCorrect = activeStageIdx === index; 
     
     // On the letter 'V' round, every tile becomes Vinny.
-    if (activeStageLetter === 'v') {
+    const stageVinny = (letter.toLowerCase() === 'v' || activeStageLetter === 'v');
+    if (stageVinny) {
         imgSrc = 'game/v.jpg';
     }
 
     function handleClick(event:MouseEvent<HTMLElement>) {
 
-        if (onClick?.(event, isCorrect) === false) return; // Prevent default callback if custom event returns false.
+        // Disable custom click events during stageVinny.
+        if (!stageVinny && onClick?.(event, isCorrect) === false) return; // Prevent default callback if custom event returns false.
 
         if (!isCorrect) {
 
-            if ((letter.toLowerCase() === 'v' || activeStageLetter === 'v')) {
+            if (stageVinny) {
                 addBalloon({
                     src: 'game/balloons/vinny.png',
                     x: event.clientX,
@@ -97,7 +99,7 @@ export default function Tile({
                 }}
             >
                 {children}
-                {letter}
+                {/*letter*/}
             </div>
         </div>
     </>
