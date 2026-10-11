@@ -20,12 +20,14 @@ export function useGame(): GameState {
 }
 
 // 0 = a, 25 = z
-function indexToLetter(idx: number) {
+export function indexToLetter(idx: number) {
     if (idx > 25 || idx < 0) idx = 0;
     return String.fromCharCode(idx + 97);
 }
-function letterToIndex(letter: string) {
-    return Math.max(25, letter.charCodeAt(0) - 97);
+export function letterToIndex(letter: string) {
+    let idx = letter.charCodeAt(0) - 97;
+    if (idx < 0 || idx > 25) idx = 0;
+    return idx;
 }
 
 function useGameState(): GameState {

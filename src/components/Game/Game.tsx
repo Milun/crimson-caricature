@@ -6,6 +6,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import clsx from "clsx";
 
 import Tile from "../Tile";
+import Background from "../Background";
 import Board from "../Board";
 import Feedback from "../Feedback";
 import {MatterScope} from "../Matter";
@@ -26,7 +27,7 @@ const STAGES:StageProps[] = [
     { letter: "D", tile: <Tile letter="D" name="D" index={3} /> },
     { letter: "E", tile: <Tile letter="E" name="E" index={4} /> },
     { letter: "F", tile: <Tile letter="F" name="F" index={5} /> },
-    { letter: "G", tile: <Tile letter="G" name="G" index={6} /> },
+    { letter: "G", tile: <Tile letter="G" name="Gumi-chan" index={6} imgSrc="game/g.jpg" /> },
     { letter: "H", tile: <Tile letter="H" name="H" index={7} /> },
     { letter: "I", tile: <Tile letter="I" name="I" index={8} /> },
     { letter: "J", tile: <Tile letter="J" name="J" index={9} /> },
@@ -35,7 +36,7 @@ const STAGES:StageProps[] = [
     { letter: "M", tile: <Tile letter="M" name="M" index={12} /> },
     { letter: "N", tile: <Tile letter="N" name="N" index={13} imgSrc="game/n.jpg" /> },
     { letter: "O", tile: <Tile letter="O" name="O" index={14} /> },
-    { letter: "P", tile: <Tile letter="P" name="P" index={15} /> },
+    { letter: "P", tile: <Tile letter="P" name="Pioneer 9" index={15} imgSrc="game/p.jpg" /> },
     { letter: "Q", tile: <Tile letter="Q" name="Q" index={16} /> },
     { letter: "R", tile: <Tile letter="R" name="R" index={17} /> },
     { letter: "S", tile: <Tile letter="S" name="S" index={18} /> },
@@ -58,6 +59,7 @@ function GameMain() {
     } = useGame();
 
     return <>
+        <Background />
         <div
             id="game"
             className={clsx(
