@@ -46,32 +46,10 @@ const STAGES:StageProps[] = [
     { letter: "X", tile: <Tile letter="X" name="X" index={23} /> },
     { letter: "Y", tile: <Tile letter="Y" name="Y" index={24} /> },
     { letter: "Z", tile: <Tile letter="Z" name="Z" index={25} /> },
+
+    // Red herring
+    { letter: "", tile: <Tile letter="FAKE" name="" index={99} /> },
 ];
-
-
-type GameProps = {};
-export default function Game({}: GameProps) {
-
-    return <>
-        <GameProvider>
-            <div
-                id="game"
-                className={clsx(
-                    "game"
-                )}
-            >
-                <header className="p-4">
-                    HEADER TBA
-                </header>
-                <div className="position-relative p-4">
-                    <MatterScope enabled={false} >
-                        <GameMain />
-                    </MatterScope>
-                </div>
-            </div>
-        </GameProvider>
-    </>
-}
 
 function GameMain() {
 
@@ -80,33 +58,56 @@ function GameMain() {
     } = useGame();
 
     return <>
-        <div className="game__main">
-            <div 
-                className={clsx(
-                    "game__board",
-                    feedbackActive && 'is-hidden'
-                )}
-            >
-                <Board
-                    columnCount={7}
-                >
-                    {STAGES.map((stage, idx) => {
-                        return (
-                            <React.Fragment key={idx}>
-                                {stage.tile}
-                            </React.Fragment>
-                        );
-                    })}
-                </Board>
-            </div>
-            <div 
-                className={clsx(
-                    "game__feedback",
-                    feedbackActive || 'is-hidden'
-                )}
-            >
-                <Feedback />
+        <div
+            id="game"
+            className={clsx(
+                "game"
+            )}
+        >
+            <header className="p-4">
+                HEADER TBA
+            </header>
+            <div className="position-relative p-4">
+                <MatterScope enabled={false} >
+                    <div className="game__main">
+                        <div 
+                            className={clsx(
+                                "game__board",
+                                feedbackActive && 'is-hidden'
+                            )}
+                        >
+                            <Board
+                                columnCount={7}
+                            >
+                                {STAGES.map((stage, idx) => {
+                                    return (
+                                        <React.Fragment key={idx}>
+                                            {stage.tile}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </Board>
+                        </div>
+                        <div 
+                            className={clsx(
+                                "game__feedback",
+                                feedbackActive || 'is-hidden'
+                            )}
+                        >
+                            <Feedback />
+                        </div>
+                    </div>
+                </MatterScope>
             </div>
         </div>
+    </>
+}
+
+
+type GameProps = {};
+export default function Game({}: GameProps) {
+
+    return <>
+        <GameProvider><GameMain /></GameProvider>
     </>
 }
