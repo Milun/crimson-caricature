@@ -71,7 +71,10 @@ function GameMain() {
             )}
         >
             <header className="p-4">
-                <Banner />
+                <Banner 
+                    letter={STAGES[activeStageIdx].letter}
+                    label={STAGES[activeStageIdx].phrase}
+                />
             </header>
             <div className="position-relative p-4">
                 <MatterScope enabled={true} >

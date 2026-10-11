@@ -7,7 +7,14 @@ import { useGame } from '../Game/useGameState';
 import './Banner.scss';
 import { indexToLetter } from '../Game/useGameState';
 
-export default function Banner() {
+type BannerProps = {
+    label: string,
+    letter: string
+}
+export default function Banner({
+    label,
+    letter
+} : BannerProps) {
 
 
     const {
@@ -19,11 +26,19 @@ export default function Banner() {
             "banner"
         )}
     >
-        <div className='banner__content'>
+        <div className='banner__inner'>
             <img 
                 className='banner__img'
                 src="game/main/scroll.png" 
             />
+            <div className='banner__content'>
+                <div className='banner__label'>
+                    {label}
+                </div>
+                <div className='banner__letter'>
+                    {letter.toUpperCase()}
+                </div>
+            </div>
         </div>
     </div>
 }
