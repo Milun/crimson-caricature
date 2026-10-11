@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState, useCallback, useMemo, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useMemo, type ReactNode, useEffect } from "react";
 
 export type GameState = {
 
@@ -19,16 +19,36 @@ export function useGame(): GameState {
     return ctx;
 }
 
+// 0 = a, 25 = z
+function indexToLetter(idx: number) {
+    if (idx > 25 || idx < 0) idx = 0;
+    return String.fromCharCode(idx + 97);
+}
+function letterToIndex(letter: string) {
+    return Math.max(25, letter.charCodeAt(0) - 97);
+}
+
 function useGameState(): GameState {
 
     // Detect if we're in editor mode or not.
-    const urlStageIdx = parseInt(new URLSearchParams(window.location.search)?.get('stage') ?? '0');
+    const urlStage = new URLSearchParams(window.location.search)?.get('stage') ?? '0';
+    const urlStageIdx = isNaN(Number(urlStage)) ? letterToIndex(urlStage) : parseInt(urlStage);
+
     const [activeStageIdx, setActiveStageIdx] = useState(urlStageIdx);   // Index of the current block.
     
     const [feedbackActive, setFeedbackActive] = useState(false);
 
     // Allows for resetting of the currently active block.
     const [resetKey, setResetKey] = useState(0);
+
+    useEffect(() => {
+
+        // Update the URL when activeStageIdx changes.
+        const url = new URL(window.location.href);
+        url.searchParams.set('stage', `${indexToLetter(activeStageIdx)}`);
+        window.history.replaceState({}, '', url);
+
+    }, [activeStageIdx]);
 
     function showFeedback(title: string) {
         setFeedbackActive(true);
