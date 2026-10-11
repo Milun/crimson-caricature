@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useCallback, useMemo, type ReactNo
 export type GameState = {
 
     activeStageIdx: number,                 // Index of the tile we're currently looking at.
+    activeStageLetter: string,              // Shortcut for converting the above.
     setActiveStageIdx: (idx:number) => void,
 
     feedbackActive: boolean,
@@ -63,6 +64,7 @@ function useGameState(): GameState {
 
     return {
         activeStageIdx,
+        activeStageLetter: indexToLetter(activeStageIdx),
         setActiveStageIdx,
         showFeedback,
         hideFeedback,

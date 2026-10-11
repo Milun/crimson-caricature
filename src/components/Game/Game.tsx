@@ -24,7 +24,7 @@ type StageProps = {
 }
 const STAGES:StageProps[] = [
     { letter: "A", phrase: "Here we are for fun today, now what begins with the letter", tile: <Tile letter="A" name="A" index={0} /> },
-    { letter: "B", phrase: "That last one was easy, but now we'll see, if you know what starts with", tile: <Tile letter="B" name="B" index={1} /> },
+    { letter: "B", phrase: "That last one was easy, but now we'll see, if you know what starts with", tile: <Tile letter="B" name="Bobo & Lil' Debil" index={1} imgSrc="game/b.jpg" /> },
     { letter: "C", phrase: "By the answer of the last one, I'm sure you're pissed, now what begins with the letter", tile: <Tile letter="C" name="Синяя Борода" index={2} imgSrc="game/c.jpg"  /> },
     { letter: "D", phrase: "Use your eyes and you will see, the one I've hid that starts with", tile: <Tile letter="D" name="D" index={3} /> },
     { letter: "E", phrase: "Until you win, you're stuck with me, now find the one which starts with", tile: <Tile letter="E" name="E" index={4} /> },
@@ -44,7 +44,7 @@ const STAGES:StageProps[] = [
     { letter: "S", phrase: "Look how you've cleared out this mess, now tell me which of these is", tile: <Tile letter="S" name="S" index={18} /> },
     { letter: "T", phrase: "My voice is giving out I see, can someone please get me some", tile: <Tile letter="T" name="T" index={19} /> },
     { letter: "U", phrase: "Hey Larry Binks, get Jimmy the Shmoo. The boss wants us to recruit", tile: <Tile letter="U" name="U" index={20} /> },
-    { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="V" index={21} /> },
+    { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="V" index={21} imgSrc="game/v.jpg" /> },
     { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <Tile letter="W" name="W" index={22} /> },
     { letter: "X", phrase: "Bitch lasagna", tile: <Tile letter="X" name="X" index={23} /> },
     { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <Tile letter="Y" name="Y" index={24} /> },
@@ -72,7 +72,7 @@ function GameMain() {
                 <Banner />
             </header>
             <div className="position-relative p-4">
-                <MatterScope enabled={false} >
+                <MatterScope enabled={true} >
                     <div className="game__main">
                         <div 
                             className={clsx(

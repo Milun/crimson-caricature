@@ -33,24 +33,44 @@ export default function Tile({
 
     const {
         activeStageIdx,
-        showFeedback
+        showFeedback,
+        activeStageLetter
     } = useGame();
     const {addBalloon} = useMatter();
 
     const isCorrect = activeStageIdx === index; 
+    
+    // On the letter 'V' round, every tile becomes Vinny.
+    if (activeStageLetter === 'v') {
+        imgSrc = 'game/v.jpg';
+    }
 
     function handleClick(event:MouseEvent<HTMLElement>) {
 
         if (onClick?.(event, isCorrect) === false) return; // Prevent default callback if custom event returns false.
 
         if (!isCorrect) {
-            addBalloon({
-                src: 'game/balloons/oops.png',
-                x: event.clientX,
-                y: event.clientY,
-                width: 100,
-                height: 35,
-            });
+
+            if ((letter.toLowerCase() === 'v' || activeStageLetter === 'v')) {
+                addBalloon({
+                    src: 'game/balloons/vinny.png',
+                    x: event.clientX,
+                    y: event.clientY,
+                    width: 100,
+                    height: 100,
+                    scale: 0.8,
+                    shape: 'circle'
+                });
+            }
+            else {
+                addBalloon({
+                    src: 'game/balloons/oops.png',
+                    x: event.clientX,
+                    y: event.clientY,
+                    width: 100,
+                    height: 35,
+                });
+            }
         }
         else {
             myShowFeedback();

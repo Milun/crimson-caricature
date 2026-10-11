@@ -10,7 +10,9 @@ type BalloonProps = {
     x: number,
     y: number,
     width: number,
-    height: number
+    height: number,
+    shape?: string,
+    scale?: number
 }
 type MatterContextProps = {
     addBalloon: (props:BalloonProps) => void;
@@ -51,21 +53,33 @@ export function MatterScope({
         const {
             src,
             x, y, 
-            width, height
+            width, height,
+            shape,
+            scale = 1
         } = props;
 
         // Add balloon here.
         if (!engine.current) return;
-        const boxA = Bodies.rectangle(x, y, width, height, {
+        const b = shape !== 'circle' ? Bodies.rectangle(x, y, width, height, {
             render: {
                 sprite: {
                     texture: src,
-                    xScale: 1,
-                    yScale: 1
+                    xScale: scale,
+                    yScale: scale
                 }
             }
-        });
-        Composite.add(engine.current.world, [boxA]);
+        }) :
+        Bodies.circle(x, y, width/2, {
+            render: {
+                sprite: {
+                    texture: src,
+                    xScale: scale,
+                    yScale: scale
+                }
+            }
+        })
+        ;
+        Composite.add(engine.current.world, [b]);
     }, []);
 
     const value = useMemo(() => ({ addBalloon }), [addBalloon]);
