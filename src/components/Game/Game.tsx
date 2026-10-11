@@ -24,16 +24,16 @@ type StageProps = {
     tile:   React.ReactElement;
 }
 const STAGES:StageProps[] = [
-    { letter: "A", phrase: "Here we are for fun today, now what begins with the letter", tile: <Tile letter="A" name="A" index={0} /> },
+    { letter: "A", phrase: "Here we are for fun today, now what begins with the letter", tile: <Tile letter="A" name="A.A.R.D.V.A.R.K" index={0} imgSrc="game/a.jpg" /> },
     { letter: "B", phrase: "That last one was easy, but now we'll see, if you know what starts with", tile: <Tile letter="B" name="Bobo & Lil' Debil" index={1} imgSrc="game/b.jpg" /> },
     { letter: "C", phrase: "By the answer of the last one, I'm sure you're pissed, now what begins with the letter", tile: <Tile letter="C" name="Синяя Борода" index={2} imgSrc="game/c.jpg"  /> },
     { letter: "D", phrase: "Use your eyes and you will see, the one I've hid that starts with", tile: <Tile letter="D" name="D" index={3} /> },
     { letter: "E", phrase: "Until you win, you're stuck with me, now find the one which starts with", tile: <Tile letter="E" name="E" index={4} /> },
     { letter: "F", phrase: "In the future, there's a Jeff. But for now what starts with", tile: <Tile letter="F" name="F" index={5} /> },
     { letter: "G", phrase: "Why did I come up with one for each of these? It ain't so hard, now look for", tile: <Tile letter="G" name="Gumi-chan" index={6} imgSrc="game/g.jpg" /> },
-    { letter: "H", phrase: ".........the fuck rhymes with", tile: <Tile letter="H" name="H" index={7} /> },
+    { letter: "H", phrase: ".........the fuck rhymes with", tile: <Tile letter="H" name="Holli Would" index={7} imgSrc="game/h.jpg" /> },
     { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <TileI letter="I" name="I" index={8} /> },
-    { letter: "J", phrase: "Please be quick, don't spend all day, looking for the letter", tile: <Tile letter="J" name="J" index={9} /> },
+    { letter: "J", phrase: "Please be quick, don't spend all day, looking for the letter", tile: <Tile letter="J" name="Jake English impersonator" index={9} imgSrc="game/j.jpg" /> },
     { letter: "K", phrase: "I've run out of things to say, while I think, go find the", tile: <Tile letter="K" name="K" index={10} /> },
     { letter: "L", phrase: "You're half way there, and doing swell. Now what starts wth the letter", tile: <TileL letter="L" name="Laughing Gnome" index={11} /> },
     { letter: "M", phrase: "I'm sure this next one is a gem, and it begins with the letter", tile: <Tile letter="M" name="M" index={12} /> },
@@ -43,7 +43,7 @@ const STAGES:StageProps[] = [
     { letter: "Q", phrase: "You know what you have to do, find the one which starts with", tile: <Tile letter="Q" name="Quizzical Mr. Jeff, The" index={16} imgSrc="game/q.jpg" /> },
     { letter: "R", phrase: "You won't have to search very far to find the one which starts with", tile: <Tile letter="R" name="R" index={17} /> },
     { letter: "S", phrase: "Look how you've cleared out this mess, now tell me which of these is", tile: <Tile letter="S" name="S" index={18} /> },
-    { letter: "T", phrase: "My voice is giving out I see, can someone please get me some", tile: <Tile letter="T" name="T" index={19} /> },
+    { letter: "T", phrase: "My voice is giving out I see, can someone please get me some", tile: <Tile letter="T" name="Time to turn the TV off" index={19} imgSrc="game/t.jpg" /> },
     { letter: "U", phrase: "Hey Larry Binks, get Jimmy the Shmoo. The boss wants us to recruit", tile: <Tile letter="U" name="U" index={20} /> },
     { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="V" index={21} imgSrc="game/v.jpg" /> },
     { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <Tile letter="W" name="W" index={22} /> },

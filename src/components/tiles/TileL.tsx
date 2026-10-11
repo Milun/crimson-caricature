@@ -8,18 +8,29 @@
  * Normal
  */
 
-import { useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import Tile, {type TileProps} from "../Tile";
 import { useMatter } from "../Matter";
+import { useGame } from "../Game/useGameState";
 
 export default function TileL({
     ...props
 }: TileProps) {
 
+    const {
+        activeStageIdx
+    } = useGame();
+
     const {addBalloon} = useMatter();
     const [offset, setOffset] = useState<{x:number, y:number}>({x: 0, y: 0});
 
     const [clickCount, setClickCount] = useState(0);
+
+    // Important: reset the tile's offset on each stage change
+    // (It can go out of bounds on incorrect stages, but it needs to be visible on the correct one)
+    useEffect(() => {
+        setOffset({x:0, y:0});
+    }, [activeStageIdx]);
 
     function handleClick(event:MouseEvent<HTMLElement>, isCorrect:boolean) {
 
