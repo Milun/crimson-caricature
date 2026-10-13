@@ -33,7 +33,7 @@
         border: 1px solid white;
     }
 
-    &:hover &__content {
+    &.hover-enabled:hover &__content {
         position: absolute;
         inset: 0;
         animation: tile-spin 1s step-end infinite;

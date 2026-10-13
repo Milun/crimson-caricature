@@ -34,6 +34,8 @@ export default function TileL({
 
     function handleClick(event:MouseEvent<HTMLElement>, isCorrect:boolean) {
 
+        if (isCorrect) return true;
+
         // Pick a random direction to run away from the cursor.
         const off = {...offset};
         const r = Math.random()*2*Math.PI;

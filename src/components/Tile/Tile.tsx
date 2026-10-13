@@ -18,7 +18,9 @@ export type TileProps = {
     children?: React.ReactNode,
     imgSrc?: string,                            // Image to use (for generic tiles)
     onClick?: (event:MouseEvent<HTMLElement>, isCorrect:boolean) => boolean    // Custom onClick event. Return false to prevent the tile's default click event.
-    style?: React.CSSProperties
+    style?: React.CSSProperties,
+
+    hoverEnabled?: boolean
 };
 export default function Tile({
     letter,
@@ -28,7 +30,8 @@ export default function Tile({
     children,
     imgSrc,
     onClick,
-    style
+    style,
+    hoverEnabled = true,
 }: TileProps) {
 
     const {
@@ -87,7 +90,8 @@ export default function Tile({
         <div
             className={clsx(
                 "tile",
-                `tile--${letter.toLowerCase()}`
+                `tile--${letter.toLowerCase()}`,
+                hoverEnabled && 'hover-enabled'
             )}
             onClick={handleClick}
             style={style}
