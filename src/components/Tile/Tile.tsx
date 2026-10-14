@@ -6,6 +6,7 @@ import { useRef, useState, useEffect, useCallback, type MouseEvent } from "react
 import clsx from "clsx";
 import { useMatter } from "../Matter";
 import { useGame } from "../Game/useGameState";
+import { useAudio } from "../Game/useAudio";
 
 import "./Tile.scss";
 import "../tiles/tilesCustom.scss";
@@ -39,7 +40,19 @@ export default function Tile({
         showFeedback,
         activeStageLetter
     } = useGame();
-    const {addBalloon} = useMatter();
+    
+    const {
+        addBalloon
+    } = useMatter();
+
+    const {
+        preload,
+        playSound
+    } = useAudio();
+
+    preload({src: 'audio/yippee.mp3'});
+    preload({src: 'audio/oops.mp3'});
+    preload({src: 'audio/uhoh.mp3'});
 
     const isCorrect = activeStageIdx === index; 
     
@@ -66,6 +79,7 @@ export default function Tile({
                     scale: 0.8,
                     shape: 'circle'
                 });
+                playSound({src: 'audio/uhoh.mp3', volume: 0.7});
             }
             else {
                 addBalloon({
@@ -75,10 +89,12 @@ export default function Tile({
                     width: 100,
                     height: 35,
                 });
+                playSound({src: 'audio/oops.mp3', volume: 0.7});
             }
         }
         else {
             myShowFeedback();
+            playSound({src: 'audio/yippee.mp3'});
         }
     }
 

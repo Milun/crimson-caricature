@@ -110,11 +110,13 @@ export function MatterScope({
             }
         });
 
-        // create two boxes and a ground
+        // create walls
         const ground = Bodies.rectangle(w/2, -10, w*1.25, 20, { isStatic: true });
+        const wall1 = Bodies.rectangle(-10, h/2, 20, h, { isStatic: true });
+        const wall2 = Bodies.rectangle(w+10, h/2, 20, h, { isStatic: true });
 
         // add all of the bodies to the world
-        Composite.add(engine.current.world, [ground]);
+        Composite.add(engine.current.world, [ground, wall1, wall2]);
 
         // run the renderer
         Render.run(render);
