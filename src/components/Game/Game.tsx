@@ -17,6 +17,7 @@ import Banner from "../Banner.tsx";
 import TileI from "../tiles/TileI";
 import TileF from "../tiles/TileF";
 import TileL from "../tiles/TileL";
+import TileW from "../tiles/TileW";
 import TileZ from "../tiles/TileZ";
 
 import './Game.scss';
@@ -37,19 +38,19 @@ const STAGES:StageProps[] = [
     { letter: "H", phrase: ".........the fuck rhymes with", tile: <Tile letter="H" name="Holli Would" index={7} imgSrc="game/h.jpg" /> },
     { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <TileI letter="I" name="Invisible Fish" index={8} /> },
     { letter: "J", phrase: "Please be quick, don't spend all day, looking for the letter", tile: <Tile letter="J" name="Jake English impersonator" index={9} imgSrc="game/j.jpg" /> },
-    { letter: "K", phrase: "I've run out of things to say, while I think, go find the", tile: <Tile letter="K" name="K" index={10} /> },
+    { letter: "K", phrase: "I've run out of things to say, while I think, go find the", tile: <Tile letter="K" name="K" index={10} imgSrc="" /> },
     { letter: "L", phrase: "You're half way there, and doing swell. Now what starts wth the letter", tile: <TileL letter="L" name="Laughing Gnome" index={11} /> },
-    { letter: "M", phrase: "I'm sure this next one is a gem, and it begins with the letter", tile: <Tile letter="M" name="M" index={12} /> },
+    { letter: "M", phrase: "I'm sure this next one is a gem, and it begins with the letter", tile: <Tile letter="M" name="Mukarrthippi Grasswren" index={12} imgSrc="game/m.png" /> },
     { letter: "N", phrase: "So we're back here once again. What begins with the letter", tile: <Tile letter="N" name="Nebuchadnezzar" index={13} imgSrc="game/n.jpg" /> },
     { letter: "O", phrase: "Only those who are in the know will know the one which starts with", tile: <Tile letter="O" name="O" index={14} /> },
     { letter: "P", phrase: "The answer to this one is new to me, now what starts with the letter", tile: <Tile letter="P" name="Pioneer 9" index={15} imgSrc="game/p.jpg" /> },
     { letter: "Q", phrase: "You know what you have to do, find the one which starts with", tile: <Tile letter="Q" name="Quizzical Mr. Jeff, The" index={16} imgSrc="game/q.jpg" /> },
-    { letter: "R", phrase: "You won't have to search very far to find the one which starts with", tile: <Tile letter="R" name="R" index={17} /> },
+    { letter: "R", phrase: "You won't have to search very far to find the one which starts with", tile: <Tile letter="R" name="Red Squirrel" index={17} imgSrc="game/r.jpg" /> },
     { letter: "S", phrase: "Look how you've cleared out this mess, now tell me which of these is", tile: <Tile letter="S" name="Spin Cycle" index={18} imgSrc="game/s.jpg" /> },
     { letter: "T", phrase: "My voice is giving out I see, can someone please get me some", tile: <Tile letter="T" name="Time to turn the TV off" index={19} imgSrc="game/t.jpg" /> },
     { letter: "U", phrase: "Roses are red and violets are PURPLE. Honey is sweet but not as sweet as", tile: <Tile letter="U" name="U" index={20} /> },
     { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="V" index={21} imgSrc="game/v.jpg" /> },
-    { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <Tile letter="W" name="W" index={22} /> },
+    { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <TileW letter="W" name="Waveform" index={22} /> },
     { letter: "X", phrase: "Bitch lasagna", tile: <Tile letter="X" name="Xheffajell" index={23} imgSrc="game/x.jpg" /> },
     { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <Tile letter="Y" name="Y" index={24} /> },
     { letter: "Z", phrase: "Grunty's rhymes live rent-free in my head, to free yourselves, you must find", tile: <TileZ letter="Z" name=".z64 ROM file" index={25} /> },
