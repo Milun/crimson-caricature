@@ -11,6 +11,7 @@ import Board from "../Board";
 import Feedback from "../Feedback";
 import {MatterScope} from "../Matter";
 import {GameProvider, useGame} from "./useGameState";
+import { AudioProvider } from "./useAudio.tsx";
 import Banner from "../Banner.tsx";
 
 import TileI from "../tiles/TileI";
@@ -88,7 +89,7 @@ function GameMain() {
                                 )}
                             >
                                 <Board
-                                    columnCount={8 - Math.floor(activeStageIdx/6)}
+                                    columnCount={9 - Math.floor(activeStageIdx/6)}
                                 >
                                     {STAGES.map((stage, idx) => {
                                         if (idx < activeStageIdx) return;
@@ -113,6 +114,7 @@ function GameMain() {
                 </div>
             </div>
         </div>
+        <div className="game-overlay" id="game-overlay" />
     </>
 }
 
@@ -121,6 +123,10 @@ type GameProps = {};
 export default function Game({}: GameProps) {
 
     return <>
-        <GameProvider><GameMain /></GameProvider>
+        <GameProvider>
+            <AudioProvider>
+                <GameMain />
+            </AudioProvider>
+        </GameProvider>
     </>
 }

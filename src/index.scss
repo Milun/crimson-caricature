@@ -12,7 +12,9 @@
     }
 }
 
-@include font-face('Neucha', 'neucha-v18-cyrillic_latin-regular',      400, normal);
+@include font-face('Neucha', 'neucha-v18-cyrillic_latin-regular',   400, normal);
+@include font-face('Cinzel', 'cinzel-decorative-v19-latin-regular', 400, normal);
+@include font-face('Cinzel', 'cinzel-decorative-v19-latin-900',     900, normal);
 
 :root {
   --tile-border-color: crimson;
