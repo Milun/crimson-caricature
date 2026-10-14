@@ -3,6 +3,7 @@
  */
 
 import clsx from 'clsx';
+import { createPortal } from 'react-dom';
 import { useGame } from '../Game/useGameState';
 import './Feedback.scss';
 
@@ -21,7 +22,30 @@ export default function Feedback() {
             "feedback"
         )}
     >
-        FEEDBACK
-        <button onClick={handleCloseClick}>Hide</button>
+        <div className='feedback__content'>
+            <div id="feedback-item" />
+            <button onClick={handleCloseClick}>Continue</button>
+        </div>
     </div>
+}
+
+export function FeedbackItem({
+    title,
+    children
+}: {
+    title: string,
+    children?: React.ReactNode,
+}) {
+
+    const parentEl = document.getElementById('feedback-item');
+    if (!parentEl) return <></>;
+
+    return createPortal(<>
+    
+        <h1 className='feedback-item__title'>{title}</h1>
+        <div className='feedback-item__img'>
+            {children}
+        </div>
+
+    </>, parentEl);
 }

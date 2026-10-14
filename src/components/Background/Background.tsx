@@ -48,7 +48,7 @@ export default function Background() {
             className='beaker'
             style={{
                 // Start off hidden for a few rounds
-                transform: `translateY(${(Math.max(0, 1-(activeStageIdx/5))) * 50}%)`
+                transform: `translateY(${(Math.max(0, 1-(activeStageIdx/8))) * 70}%)`
             }}
         >
             <img 

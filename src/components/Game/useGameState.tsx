@@ -8,7 +8,7 @@ export type GameState = {
     setActiveStageIdx: (idx:number) => void,
 
     feedbackActive: boolean,
-    showFeedback: (title: string) => void,  // When called, fades out the board and shows feedback for the clicked tile.
+    showFeedback: () => void,  // When called, fades out the board and shows feedback for the clicked tile.
     hideFeedback: () => void,
 }
 
@@ -22,7 +22,8 @@ export function useGame(): GameState {
 
 // 0 = a, 25 = z
 export function indexToLetter(idx: number) {
-    if (idx > 25 || idx < 0) idx = 0;
+    if (idx < 0) return '';
+    if (idx > 25) idx = 0;
     return String.fromCharCode(idx + 97);
 }
 export function letterToIndex(letter: string) {
@@ -33,9 +34,9 @@ export function letterToIndex(letter: string) {
 
 function useGameState(): GameState {
 
-    // Detect if we're in editor mode or not.
-    const urlStage = new URLSearchParams(window.location.search)?.get('stage') ?? '0';
-    const urlStageIdx = isNaN(Number(urlStage)) ? letterToIndex(urlStage) : parseInt(urlStage);
+    // If no stage param, show the splash screen instead.
+    const urlStage = new URLSearchParams(window.location.search)?.get('stage') ?? null;
+    const urlStageIdx = urlStage === null ? -1 : (isNaN(Number(urlStage)) ? letterToIndex(urlStage) : parseInt(urlStage));
 
     const [activeStageIdx, setActiveStageIdx] = useState(urlStageIdx);   // Index of the current block.
     
@@ -48,12 +49,15 @@ function useGameState(): GameState {
 
         // Update the URL when activeStageIdx changes.
         const url = new URL(window.location.href);
-        url.searchParams.set('stage', `${indexToLetter(activeStageIdx)}`);
+        
+        if (activeStageIdx >= 0) url.searchParams.set('stage', indexToLetter(activeStageIdx));
+        else url.searchParams.delete('stage');
+
         window.history.replaceState({}, '', url);
 
     }, [activeStageIdx]);
 
-    function showFeedback(title: string) {
+    function showFeedback() {
         setFeedbackActive(true);
     }
 

@@ -41,3 +41,23 @@
     position: absolute;
     pointer-events: none;
 }
+
+.game-splash {
+    width: 100dvw;
+    height: 100dvh;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-size: cover;
+
+    button {
+        position: absolute;
+        bottom: 10%;
+        right: 10%;
+        font-size: 4rem;
+        background: transparent;
+        border: none;
+        color: white;
+        text-shadow: 0.25rem 0.25rem 0 black;
+    }
+}

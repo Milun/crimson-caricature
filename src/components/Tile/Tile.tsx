@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { useMatter } from "../Matter";
 import { useGame } from "../Game/useGameState";
 import { useAudio } from "../Game/useAudio";
+import { FeedbackItem } from "../Feedback/Feedback";
 
 import "./Tile.scss";
 import "../tiles/tilesCustom.scss";
@@ -59,6 +60,7 @@ export default function Tile({
     preload({src: 'audio/uhoh.mp3'});
 
     const isCorrect = activeStageIdx === index; 
+    const [feedbackEnabled, setFeedbackEnabled] = useState(false);
     
     // On the letter 'V' round, every tile becomes Vinny.
     const stageVinny = (letter.toLowerCase() === 'v' || activeStageLetter === 'v');
@@ -105,7 +107,8 @@ export default function Tile({
     }
 
     function myShowFeedback() {
-        showFeedback(name);
+        showFeedback();
+        setFeedbackEnabled(true);
     }
 
     return <>
@@ -128,5 +131,11 @@ export default function Tile({
                 {/*letter*/}
             </div>
         </div>
+        {feedbackEnabled && <>
+            <FeedbackItem title={name}>
+                {imgSrc && <img src={imgSrc} />}
+            </FeedbackItem>
+        </>
+        }
     </>
 }

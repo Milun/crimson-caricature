@@ -34,7 +34,7 @@ const STAGES:StageProps[] = [
     { letter: "F", phrase: "In the future, there's a Jeff. But for now what starts with", tile: <Tile letter="F" name="F" index={5} /> },
     { letter: "G", phrase: "Why did I come up with one for each of these? It ain't so hard, now look for", tile: <Tile letter="G" name="Gumi-chan" index={6} imgSrc="game/g.jpg" incorrectAudioSrc="audio/wuewuewue.mp3" /> },
     { letter: "H", phrase: ".........the fuck rhymes with", tile: <Tile letter="H" name="Holli Would" index={7} imgSrc="game/h.jpg" /> },
-    { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <TileI letter="I" name="Invisible" index={8} /> },
+    { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <TileI letter="I" name="Invisible Fish" index={8} /> },
     { letter: "J", phrase: "Please be quick, don't spend all day, looking for the letter", tile: <Tile letter="J" name="Jake English impersonator" index={9} imgSrc="game/j.jpg" /> },
     { letter: "K", phrase: "I've run out of things to say, while I think, go find the", tile: <Tile letter="K" name="K" index={10} /> },
     { letter: "L", phrase: "You're half way there, and doing swell. Now what starts wth the letter", tile: <TileL letter="L" name="Laughing Gnome" index={11} /> },
@@ -61,15 +61,23 @@ function GameMain() {
 
     const {
         feedbackActive,
-        activeStageIdx
+        activeStageIdx,
+        setActiveStageIdx
     } = useGame();
 
     const {
         playPlaylist
     } = useAudio();
 
+    const [gameActive, setGameActive] = useState(false);
+
+    useEffect(() => {
+        if (activeStageIdx >= 0) setGameActive(true);
+    }, [activeStageIdx]);
+
     useEffect(() => {
 
+        // FIXME: Needs a clickable overlay.
         playPlaylist([
             'audio/uhoh.mp3',
             'audio/bgm-1.opus',
@@ -79,57 +87,76 @@ function GameMain() {
             'audio/bgm-5.opus',
         ], {src: '', volume: 0.25});
 
-    }, []);
+    }, [gameActive]);
 
     return <>
         <div className="game-wrapper" id="game-wrapper">
-            <Background />
-            <div
-                id="game"
-                className={clsx(
-                    "game"
-                )}
-            >
-                <header className="p-4">
-                    <Banner 
-                        letter={STAGES[activeStageIdx].letter}
-                        label={STAGES[activeStageIdx].phrase}
-                    />
-                </header>
-                <div className="position-relative p-4">
-                    <MatterScope enabled={true} >
-                        <div className="game__main">
-                            <div 
-                                className={clsx(
-                                    "game__board",
-                                    feedbackActive && 'is-hidden'
-                                )}
-                            >
-                                <Board
-                                    columnCount={9 - Math.floor(activeStageIdx/6)}
+            {gameActive && <>
+                <Background />
+                <div
+                    id="game"
+                    className={clsx(
+                        "game"
+                    )}
+                >
+                    <header className="p-4">
+                        {activeStageIdx >= 0 &&
+                            <Banner 
+                                letter={STAGES[activeStageIdx].letter}
+                                label={STAGES[activeStageIdx].phrase}
+                            />
+                        }
+                    </header>
+                    <div className="position-relative p-4">
+                        <MatterScope enabled={true} >
+                            <div className="game__main">
+                                <div 
+                                    className={clsx(
+                                        "game__board",
+                                        feedbackActive && 'is-hidden'
+                                    )}
                                 >
-                                    {STAGES.map((stage, idx) => {
-                                        if (idx < activeStageIdx) return;
-                                        return (
-                                            <React.Fragment key={idx}>
-                                                {stage.tile}
-                                            </React.Fragment>
-                                        );
-                                    })}
-                                </Board>
+                                    <Board
+                                        columnCount={9 - Math.floor(activeStageIdx/6)}
+                                    >
+                                        {STAGES.map((stage, idx) => {
+                                            if (idx < activeStageIdx) return;
+                                            return (
+                                                <React.Fragment key={idx}>
+                                                    {stage.tile}
+                                                </React.Fragment>
+                                            );
+                                        })}
+                                    </Board>
+                                </div>
+                                <div 
+                                    className={clsx(
+                                        "game__feedback",
+                                        feedbackActive || 'is-hidden'
+                                    )}
+                                >
+                                    <Feedback />
+                                </div>
                             </div>
-                            <div 
-                                className={clsx(
-                                    "game__feedback",
-                                    feedbackActive || 'is-hidden'
-                                )}
-                            >
-                                <Feedback />
-                            </div>
-                        </div>
-                    </MatterScope>
+                        </MatterScope>
+                    </div>
                 </div>
-            </div>
+            </>}
+            {!gameActive && 
+                <div 
+                    id="game-splash"
+                    className="game-splash" 
+                    style={{
+                        backgroundImage: `url(game/bgs/bg-splash.jpg)`
+                    }}
+                >
+                    <button onClick={() => {
+                        setActiveStageIdx(0);
+                    }}>
+                        Start
+                    </button>
+                </div>
+            }
         </div>
         <div className="game-overlay" id="game-overlay" />
     </>
