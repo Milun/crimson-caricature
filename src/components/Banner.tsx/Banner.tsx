@@ -16,7 +16,6 @@ export default function Banner({
     letter
 } : BannerProps) {
 
-
     const {
         activeStageIdx
     } = useGame();
@@ -33,7 +32,11 @@ export default function Banner({
             />
             <div className='banner__content'>
                 <div className='banner__label'>
-                    {label}
+                    <span
+                        style={{
+                            fontSize: `${label.length > 70 ? 0.8 : 1}em`
+                        }}
+                    >{label}</span>
                 </div>
                 <div className='banner__letter'>
                     {letter.toUpperCase()}
