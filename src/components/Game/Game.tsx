@@ -32,7 +32,7 @@ const STAGES:StageProps[] = [
     { letter: "D", phrase: "Use your eyes and you will see, the one I've hid that starts with", tile: <Tile letter="D" name="D" index={3} /> },
     { letter: "E", phrase: "Until you win, you're stuck with me, now find the one which starts with", tile: <Tile letter="E" name="E" index={4} /> },
     { letter: "F", phrase: "In the future, there's a Jeff. But for now what starts with", tile: <Tile letter="F" name="F" index={5} /> },
-    { letter: "G", phrase: "Why did I come up with one for each of these? It ain't so hard, now look for", tile: <Tile letter="G" name="Gumi-chan" index={6} imgSrc="game/g.jpg" /> },
+    { letter: "G", phrase: "Why did I come up with one for each of these? It ain't so hard, now look for", tile: <Tile letter="G" name="Gumi-chan" index={6} imgSrc="game/g.jpg" incorrectAudioSrc="audio/wuewuewue.mp3" /> },
     { letter: "H", phrase: ".........the fuck rhymes with", tile: <Tile letter="H" name="Holli Would" index={7} imgSrc="game/h.jpg" /> },
     { letter: "I", phrase: "You'll need to search low and high to find the one that starts with", tile: <TileI letter="I" name="Invisible" index={8} /> },
     { letter: "J", phrase: "Please be quick, don't spend all day, looking for the letter", tile: <Tile letter="J" name="Jake English impersonator" index={9} imgSrc="game/j.jpg" /> },

@@ -21,6 +21,8 @@ export type TileProps = {
     onClick?: (event:MouseEvent<HTMLElement>, isCorrect:boolean) => boolean    // Custom onClick event. Return false to prevent the tile's default click event.
     style?: React.CSSProperties,
 
+    incorrectAudioSrc?: string,
+
     hoverEnabled?: boolean
 };
 export default function Tile({
@@ -33,6 +35,8 @@ export default function Tile({
     onClick,
     style,
     hoverEnabled = true,
+    
+    incorrectAudioSrc = 'audio/oops.mp3',
 }: TileProps) {
 
     const {
@@ -51,7 +55,7 @@ export default function Tile({
     } = useAudio();
 
     preload({src: 'audio/yippee.mp3'});
-    preload({src: 'audio/oops.mp3'});
+    preload({src: incorrectAudioSrc});
     preload({src: 'audio/uhoh.mp3'});
 
     const isCorrect = activeStageIdx === index; 
@@ -82,14 +86,16 @@ export default function Tile({
                 playSound({src: 'audio/uhoh.mp3', volume: 0.7});
             }
             else {
+                const r = Math.floor(Math.random()*3);
+
                 addBalloon({
-                    src: 'game/balloons/oops.png',
+                    src: `game/balloons/oops-${r}.png`,
                     x: event.clientX,
                     y: event.clientY,
                     width: 100,
                     height: 35,
                 });
-                playSound({src: 'audio/oops.mp3', volume: 0.7});
+                playSound({src: incorrectAudioSrc, volume: 0.7});
             }
         }
         else {
