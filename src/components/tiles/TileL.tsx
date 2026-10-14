@@ -12,6 +12,7 @@ import { useEffect, useState, type MouseEvent } from "react";
 import Tile, {type TileProps} from "../Tile";
 import { useMatter } from "../Matter";
 import { useGame } from "../Game/useGameState";
+import { useAudio } from "../Game/useAudio";
 
 export default function TileL({
     ...props
@@ -20,6 +21,13 @@ export default function TileL({
     const {
         activeStageIdx
     } = useGame();
+
+    const {
+        preload,
+        playSound
+    } = useAudio();
+
+    preload({src: 'audio/gnome.opus'});
 
     const {addBalloon} = useMatter();
     const [offset, setOffset] = useState<{x:number, y:number}>({x: 0, y: 0});
@@ -51,6 +59,7 @@ export default function TileL({
             height: 30,
         });
 
+        playSound({src: 'audio/gnome.mp3', volume: 0.5});
         setClickCount(clickCount+1);
 
         return false; // Prevent default.

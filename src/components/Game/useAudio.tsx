@@ -12,7 +12,9 @@ export function useAudio(): AudioState {
 
 export type AudioState = {
     preload: (options:HowlOptions) => Howl,
+
     playMusic: (options:HowlOptions & {crossFadeDuration?: number}) => void,
+    playSound: (options:HowlOptions) => void,
 }
 
 function useAudioState(): AudioState {
@@ -55,9 +57,20 @@ function useAudioState(): AudioState {
         curMusicRef.current = next;
     }
 
+    function playSound({
+        src,
+        loop = false,
+        ...props
+    }: HowlOptions & {crossFadeDuration?: number}) {
+
+        const next = preload({ src: src, loop: loop, ...props });
+        next.play();
+    }
+
     return {
         preload,
-        playMusic
+        playMusic,
+        playSound
     }
 }
 
