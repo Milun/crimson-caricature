@@ -1,132 +1,155 @@
+import { createContext, useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
+import { Howl, type HowlOptions } from "howler";
 
-import { createContext, useContext, useRef, useState, useCallback, useMemo, type ReactNode, useEffect } from "react";
-import { Howl, type HowlOptions } from 'howler';
+export type MusicOptions = HowlOptions & { crossFadeDuration?: number };
+export type PlaylistOptions = Omit<MusicOptions, "src">;
+export type Playlist = { stop: (fadeMs?: number) => void };
 
-const AudioContext = createContext<AudioState | null>(null);
+export type AudioState = {
+
+    preload: (options: HowlOptions) => Howl; // Creates (or returns a cached) Howl.
+    
+    playSound: (options: HowlOptions) => number;
+    playMusic: (options: MusicOptions) => Howl;
+    playPlaylist: (srcs: (string | string[])[], options?: PlaylistOptions) => Playlist;
+    stopMusic: (fadeMs?: number) => void;
+    getCurrentMusic: () => Howl | null;
+};
+
+// Not called "AudioContext" so it doesn't shadow the browser's Web Audio AudioContext.
+const GameAudioContext = createContext<AudioState | null>(null);
 
 export function useAudio(): AudioState {
-    const ctx = useContext(AudioContext);
-    if (!ctx) throw new Error('useAudio() must be used inside a <AudioProvider>');
+    const ctx = useContext(GameAudioContext);
+    if (!ctx) throw new Error("useAudio() must be used inside an <AudioProvider>");
     return ctx;
 }
 
-export type AudioState = {
-    preload: (options:HowlOptions) => Howl,
-
-    getCurrentMusic: () => Howl | null,
-    playMusic: (options:HowlOptions & {crossFadeDuration?: number}) => Howl,
-    playSound: (options:HowlOptions) => Howl,
-    playPlaylist: (srsc:string[], options:HowlOptions) => void,
-}
+const keyOf = (src: string | string[]) => (Array.isArray(src) ? src.join("|") : src);
 
 function useAudioState(): AudioState {
+    const sfxCache = useRef(new Map<string, Howl>());
+    const currentMusic = useRef<Howl | null>(null);
+    const playlistToken = useRef(0); // bumped to cancel whichever playlist is running
 
-    const audioRef = useRef<Record<string, Howl>>(null); // Dictionary of audio.
-    const curMusicRef = useRef<Howl>(null);
+    // Everything below only touches refs, so build the API once and keep it stable.
+    const api = useMemo<AudioState>(() => {
 
-    function preload({
-        src,
-        ...props
-    }:HowlOptions) {
-
-        // Determine if we already have this audio preloaded.
-        // Note: saving a bit of time by only loading one src at a time.
-        const _src:string = Array.isArray(src) ? src[0] : src;
-        if (audioRef?.current?.[_src]) return audioRef.current[_src];
-
-        // Otherwise, preload it.
-        const audio = new Howl({src: _src, ...props});
-        return audio;
-    }
-
-    function playMusic({
-        src,
-        crossFadeDuration = 1500,
-        volume = 1,
-        loop = true,
-        ...props
-    }: HowlOptions & {crossFadeDuration?: number}) {
-
-        const next = preload({ src: src, loop: loop, volume: 0, ...props });
-        next.play();
-        next.fade(0, volume, crossFadeDuration);
-
-        if (curMusicRef.current) {
-            const old = curMusicRef.current;
-            old.fade(old.volume(), 0, crossFadeDuration);
-            old.once('fade', () => old.unload());
-        }
-        curMusicRef.current = next;
-        return next;
-    }
-
-    function playSound({
-        src,
-        loop = false,
-        ...props
-    }: HowlOptions & {crossFadeDuration?: number}) {
-
-        const next = preload({ src: src, loop: loop, ...props });
-        next.play();
-        return next;
-    }
-
-    function getCurrentMusic() {
-        return curMusicRef.current;
-    }
-
-    function playPlaylist(srcs:string[], options:HowlOptions) {
-        
-        let index = 0;
-        let current:Howl|null = null;
-
-        function playTrack(i:number) {
-            
-            const o = {
-                ...options, 
-                src: srcs[i], 
-                html5: true, 
-                loop: false,
-                onend: () => {
-                    index++;
-                    if (index >= srcs.length) {
-                        index = 0;
-                    }
-                    playTrack(index);
-                }
+        function preload(options: HowlOptions): Howl {
+            const key = keyOf(options.src);
+            let howl = sfxCache.current.get(key);
+            if (!howl) {
+                howl = new Howl(options); // keep the full src array so format fallbacks still work
+                sfxCache.current.set(key, howl);
             }
-
-            current = preload({ ...o });
-            playMusic({...o, crossFadeDuration: 2000});
+            return howl;
         }
 
-        playTrack(index);
-        return { 
-            stop: () => current?.stop(), 
-            get current() { 
-                return current; 
-            } 
-        };
-    }
+        function playSound(options: HowlOptions): number {
+            const howl = preload(options);
+            const id = howl.play();
+            // Apply per-play settings to this playback only, since the Howl is shared.
+            if (options.volume !== undefined) howl.volume(options.volume, id);
+            if (options.loop !== undefined) howl.loop(options.loop, id);
+            return id;
+        }
 
-    return {
-        preload,
-        playMusic,
-        playSound,
-        playPlaylist,
-        getCurrentMusic,
-    }
+        function fadeOutAndUnload(howl: Howl, ms: number) {
+            howl.off("end"); // stop an outgoing playlist track from advancing the playlist
+            if (ms <= 0 || !howl.playing()) {
+                howl.unload();
+                return;
+            }
+            howl.fade(howl.volume(), 0, ms);
+            howl.once("fade", () => howl.unload());
+        }
+
+        // Music is never cached: each track gets a fresh Howl that's unloaded when it's replaced.
+        function startMusic({
+            crossFadeDuration = 1500,
+            volume = 1,
+            loop = true,
+            html5 = true, // stream long tracks rather than decoding them up front
+            ...options
+        }: MusicOptions): Howl {
+            const next = new Howl({ ...options, loop, html5, volume: 0 });
+            next.play();
+            next.fade(0, volume, crossFadeDuration);
+
+            const old = currentMusic.current;
+            if (old) fadeOutAndUnload(old, crossFadeDuration);
+
+            currentMusic.current = next;
+            return next;
+        }
+
+        function playMusic(options: MusicOptions): Howl {
+            playlistToken.current++;
+            return startMusic(options);
+        }
+
+        function stopMusic(fadeMs = 1000) {
+            playlistToken.current++;
+            const cur = currentMusic.current;
+            if (cur) fadeOutAndUnload(cur, fadeMs);
+            currentMusic.current = null;
+        }
+
+        function playPlaylist(
+            srcs: (string | string[])[],
+            { crossFadeDuration = 2000, ...options }: PlaylistOptions = {}
+        ): Playlist {
+            const token = ++playlistToken.current;
+            let index = 0;
+
+            const playTrack = () => {
+                if (token !== playlistToken.current) return; // a newer playlist/track took over
+                startMusic({
+                    ...options,
+                    src: srcs[index],
+                    loop: false,
+                    crossFadeDuration,
+                    onend: () => {
+                        index = (index + 1) % srcs.length;
+                        playTrack();
+                    },
+                });
+            };
+
+            playTrack();
+            return {
+                stop: (fadeMs?: number) => {
+                    if (token === playlistToken.current) stopMusic(fadeMs);
+                },
+            };
+        }
+
+        return {
+            preload,
+            playSound,
+            playMusic,
+            playPlaylist,
+            stopMusic,
+            getCurrentMusic: () => currentMusic.current,
+        };
+    }, []);
+
+    // Release everything if the provider unmounts.
+    useEffect(() => {
+        const cache = sfxCache.current;
+        return () => {
+            playlistToken.current++;
+            currentMusic.current?.unload();
+            currentMusic.current = null;
+            cache.forEach((howl) => howl.unload());
+            cache.clear();
+        };
+    }, []);
+
+    return api;
 }
 
-export function AudioProvider({ 
-    children 
-}: {
-    children: ReactNode;
-}) {
+export function AudioProvider({ children }: { children: ReactNode }) {
     const state = useAudioState();
-    return (
-        <AudioContext.Provider value={state}>
-            {children}
-        </AudioContext.Provider>
-    );
+    return <GameAudioContext.Provider value={state}>{children}</GameAudioContext.Provider>;
 }

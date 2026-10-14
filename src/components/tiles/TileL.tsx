@@ -27,7 +27,7 @@ export default function TileL({
         playSound
     } = useAudio();
 
-    preload({src: 'audio/gnome.opus'});
+    preload({src: 'audio/gnome.mp3'});
 
     const {addBalloon} = useMatter();
     const [offset, setOffset] = useState<{x:number, y:number}>({x: 0, y: 0});

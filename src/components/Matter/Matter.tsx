@@ -77,8 +77,9 @@ export function MatterScope({
                     yScale: scale
                 }
             }
-        })
-        ;
+        });
+
+        b.angle = (Math.random() * 0.1) - 0.05;
         Composite.add(engine.current.world, [b]);
     }, []);
 

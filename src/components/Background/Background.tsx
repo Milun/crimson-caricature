@@ -8,6 +8,7 @@ import './Background.scss';
 import { indexToLetter } from '../Game/useGameState';
 import { useAudio } from '../Game/useAudio';
 import { useEffect } from 'react';
+import { Webcam } from './Webcam';
 
 export default function Background() {
 
@@ -37,7 +38,9 @@ export default function Background() {
         <div style={{opacity: 0.6}}>
             <BackgroundItem src={'game/bgs/bg-stage.jpg'} active={true} />
             <BackgroundItem src={'game/bgs/bg-mtg.jpg'} active={activeStageIdx > 7} />
-            <BackgroundItem src={'game/bgs/bg-ballpit.jpg'} active={activeStageIdx > 14} />
+            <BackgroundItem active={activeStageIdx > 10}>
+                <Webcam />
+            </BackgroundItem>
             <BackgroundItem src={'game/bgs/bg-mtg2.jpg'} active={activeStageIdx > 15} />
             <BackgroundItem src={'game/bgs/bg-meatloaf-scary.jpg'} active={activeStageIdx > 20} />
             <BackgroundItem src={'game/bgs/bg-vinny.jpg'} active={indexToLetter(activeStageIdx) === 'v'} />
