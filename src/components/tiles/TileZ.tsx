@@ -8,7 +8,7 @@
  * Normal
  */
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type MouseEvent, useRef } from "react";
 import { createPortal } from "react-dom";
 import Tile, {type TileProps} from "../Tile";
 import { useGame } from "../Game/useGameState";
@@ -20,6 +20,7 @@ export default function TileL({
 }: TileProps) {
 
     const [state, setState] = useState<number>(0); // 0 = idle, 1 = shooting, 2 = locked.
+    const prevMusicRef = useRef<Howl>(null);
 
     const {
         activeStageIdx,
@@ -27,7 +28,8 @@ export default function TileL({
 
     const {
         preload,
-        playMusic
+        playMusic,
+        getCurrentMusic
     } = useAudio();
 
     preload({src: 'audio/goldeneye-gameover.mp3'});
@@ -58,6 +60,7 @@ export default function TileL({
                 break;
 
             case 1:
+                prevMusicRef.current = getCurrentMusic();
                 playMusic({
                     src: 'audio/goldeneye-gameover.mp3',
                     loop: false,
@@ -68,6 +71,7 @@ export default function TileL({
                 break;
 
             case 2:
+                prevMusicRef?.current?.play();
                 gameWrapperEl?.classList.remove('tilez-anim');
                 break;
         }

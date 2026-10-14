@@ -11,7 +11,7 @@ import Board from "../Board";
 import Feedback from "../Feedback";
 import {MatterScope} from "../Matter";
 import {GameProvider, useGame} from "./useGameState";
-import { AudioProvider } from "./useAudio.tsx";
+import { AudioProvider, useAudio } from "./useAudio.tsx";
 import Banner from "../Banner.tsx";
 
 import TileI from "../tiles/TileI";
@@ -63,6 +63,23 @@ function GameMain() {
         feedbackActive,
         activeStageIdx
     } = useGame();
+
+    const {
+        playPlaylist
+    } = useAudio();
+
+    useEffect(() => {
+
+        playPlaylist([
+            'audio/uhoh.mp3',
+            'audio/bgm-1.opus',
+            'audio/bgm-2.opus',
+            'audio/bgm-3.opus',
+            'audio/bgm-4.opus',
+            'audio/bgm-5.opus',
+        ], {src: '', volume: 0.25});
+
+    }, []);
 
     return <>
         <div className="game-wrapper" id="game-wrapper">

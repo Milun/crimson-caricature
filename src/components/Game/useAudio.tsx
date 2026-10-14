@@ -13,8 +13,10 @@ export function useAudio(): AudioState {
 export type AudioState = {
     preload: (options:HowlOptions) => Howl,
 
-    playMusic: (options:HowlOptions & {crossFadeDuration?: number}) => void,
-    playSound: (options:HowlOptions) => void,
+    getCurrentMusic: () => Howl | null,
+    playMusic: (options:HowlOptions & {crossFadeDuration?: number}) => Howl,
+    playSound: (options:HowlOptions) => Howl,
+    playPlaylist: (srsc:string[], options:HowlOptions) => void,
 }
 
 function useAudioState(): AudioState {
@@ -55,6 +57,7 @@ function useAudioState(): AudioState {
             old.once('fade', () => old.unload());
         }
         curMusicRef.current = next;
+        return next;
     }
 
     function playSound({
@@ -65,12 +68,53 @@ function useAudioState(): AudioState {
 
         const next = preload({ src: src, loop: loop, ...props });
         next.play();
+        return next;
+    }
+
+    function getCurrentMusic() {
+        return curMusicRef.current;
+    }
+
+    function playPlaylist(srcs:string[], options:HowlOptions) {
+        
+        let index = 0;
+        let current:Howl|null = null;
+
+        function playTrack(i:number) {
+            
+            const o = {
+                ...options, 
+                src: srcs[i], 
+                html5: true, 
+                loop: false,
+                onend: () => {
+                    index++;
+                    if (index >= srcs.length) {
+                        index = 0;
+                    }
+                    playTrack(index);
+                }
+            }
+
+            current = preload({ ...o });
+            playMusic({...o, crossFadeDuration: 2000});
+        }
+
+        playTrack(index);
+        return { 
+            stop: () => current?.stop(), 
+            get current() { 
+                return current; 
+            } 
+        };
     }
 
     return {
         preload,
         playMusic,
-        playSound
+        playSound,
+        playPlaylist,
+        getCurrentMusic,
     }
 }
 

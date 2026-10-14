@@ -6,13 +6,28 @@ import clsx from 'clsx';
 import { useGame } from '../Game/useGameState';
 import './Background.scss';
 import { indexToLetter } from '../Game/useGameState';
+import { useAudio } from '../Game/useAudio';
+import { useEffect } from 'react';
 
 export default function Background() {
 
 
     const {
-        activeStageIdx
+        activeStageIdx,
+        activeStageLetter
     } = useGame();
+
+    const {
+        preload,
+        playMusic
+    } = useAudio();
+
+    preload({src: 'audio/bgm-danger.mp3', loop: true});
+    useEffect(() => {
+        if (activeStageLetter.toLowerCase() === 'v') {
+            playMusic({src: 'audio/bgm-danger.mp3', loop: true, crossFadeDuration: 4000, volume: 0.5});
+        }
+    }, [activeStageIdx]);
 
     return <div
         className={clsx(
