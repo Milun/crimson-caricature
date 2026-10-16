@@ -119,7 +119,7 @@ export default function Tile({
                 hoverEnabled && 'hover-enabled'
             )}
             onClick={handleClick}
-            style={style}
+            style={{...style, visibility: activeStageIdx < 26 ? 'visible' : 'hidden'}}
         >
             <div 
                 className="tile__content"

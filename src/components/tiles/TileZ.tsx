@@ -20,7 +20,6 @@ export default function TileL({
 }: TileProps) {
 
     const [state, setState] = useState<number>(0); // 0 = idle, 1 = shooting, 2 = locked.
-    const prevMusicRef = useRef<Howl>(null);
 
     const {
         activeStageIdx,
@@ -28,8 +27,9 @@ export default function TileL({
 
     const {
         preload,
-        playMusic,
-        getCurrentMusic
+        playSound,
+        muteBGM,
+        unmuteBGM
     } = useAudio();
 
     preload({src: 'audio/goldeneye-gameover.mp3'});
@@ -60,19 +60,18 @@ export default function TileL({
                 break;
 
             case 1:
-                prevMusicRef.current = getCurrentMusic();
-                playMusic({
+                playSound({
                     src: 'audio/goldeneye-gameover.mp3',
                     loop: false,
-                    volume: 1,
-                    crossFadeDuration: 0
+                    volume: 1
                 });
+                muteBGM(0);
                 gameWrapperEl?.classList.add('tilez-anim');
                 break;
 
             case 2:
-                prevMusicRef?.current?.play();
                 gameWrapperEl?.classList.remove('tilez-anim');
+                unmuteBGM(0.1, 1000);
                 break;
         }
 

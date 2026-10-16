@@ -19,7 +19,8 @@ export default function TileL({
 }: TileProps) {
 
     const {
-        activeStageIdx
+        activeStageIdx,
+        activeStageLetter
     } = useGame();
 
     const [transform, setTransform] = useState('');
@@ -75,7 +76,7 @@ export default function TileL({
         <Tile 
             imgSrc="game/w.jpg"
             style={{
-                transform: transform
+                transform: activeStageLetter.toLowerCase() !== 'v' ? transform : ''
             }}
             {...props}
         />

@@ -9,6 +9,7 @@ import { indexToLetter } from '../Game/useGameState';
 import { useAudio } from '../Game/useAudio';
 import { useEffect } from 'react';
 import { Webcam } from './Webcam';
+import { useRef } from 'react';
 
 export default function Background() {
 
@@ -20,15 +21,25 @@ export default function Background() {
 
     const {
         preload,
-        playMusic
+        playSound,
+        muteBGM,
+        unmuteBGM
     } = useAudio();
+
+    const bgmDanger = useRef<Howl>(null);
 
     preload({src: 'audio/bgm-danger.mp3', loop: true});
     useEffect(() => {
         if (activeStageLetter.toLowerCase() === 'v') {
-            playMusic({src: 'audio/bgm-danger.mp3', loop: true, crossFadeDuration: 4000, volume: 0.5});
+            muteBGM(1000);
+            bgmDanger.current = playSound({src: 'audio/bgm-danger.mp3', loop: true, volume: 0.4});
         }
-    }, [activeStageIdx]);
+        else if (activeStageLetter.toLowerCase() === 'w') {
+            unmuteBGM(0.1, 0);
+            bgmDanger.current?.stop();
+            bgmDanger.current?.unload();
+        }
+    }, [activeStageLetter]);
 
     return <div
         className={clsx(
@@ -42,10 +53,11 @@ export default function Background() {
             <BackgroundItem active={activeStageIdx > 13}><Webcam /></BackgroundItem>
             <BackgroundItem src={'game/bgs/bg-meatloaf-scary.jpg'} active={activeStageIdx > 20} />
             <BackgroundItem src={'game/bgs/bg-vinny.jpg'} active={indexToLetter(activeStageIdx) === 'v'} />
+            <BackgroundItem src={'game/bgs/bg-end.jpg'} active={activeStageIdx >= 26} />
         </div>
 
         {/* Fake Muppet RaceMania loading bar. */}
-        <div 
+        {activeStageIdx < 26 && <div 
             className='beaker'
             style={{
                 // Start off hidden for a few rounds
@@ -63,7 +75,7 @@ export default function Background() {
                 className='beaker__base'
                 src={'game/main/beaker-base.png'} 
             />
-        </div>
+        </div>}
     </div>
 }
 

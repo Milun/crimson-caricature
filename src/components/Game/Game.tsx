@@ -49,7 +49,7 @@ const STAGES:StageProps[] = [
     { letter: "S", phrase: "Look how you've cleared out this mess, now tell me which of these is", tile: <Tile letter="S" name="Spin Cycle" index={18} imgSrc="game/s.jpg" /> },
     { letter: "T", phrase: "My voice is giving out I see, can someone please get me some", tile: <Tile letter="T" name="Time to turn the TV off" index={19} imgSrc="game/t.jpg" /> },
     { letter: "U", phrase: "Roses are red and violets are PURPLE. Honey is sweet but not as sweet as", tile: <Tile letter="U" name="Unnaturally round individual" index={20} imgSrc="game/u.jpg" /> },
-    { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="V" index={21} imgSrc="game/v.jpg" /> },
+    { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny" index={21} imgSrc="game/v.jpg" /> },
     { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <TileW letter="W" name="Waveform" index={22} /> },
     { letter: "X", phrase: "Bitch lasagna", tile: <Tile letter="X" name="Xheffajell" index={23} imgSrc="game/x.jpg" /> },
     { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <Tile letter="Y" name="Y-nstein Burger, the Diddy Movies Boss" index={24} imgSrc="game/y.jpg" /> },
@@ -66,10 +66,6 @@ function GameMain() {
         activeStageIdx,
         setActiveStageIdx
     } = useGame();
-
-    const {
-        playPlaylist
-    } = useAudio();
 
     const [gameActive, setGameActive] = useState(false);
 
