@@ -151,5 +151,9 @@ function useAudioState(): AudioState {
 
 export function AudioProvider({ children }: { children: ReactNode }) {
     const state = useAudioState();
-    return <GameAudioContext.Provider value={state}>{children}</GameAudioContext.Provider>;
+    return <GameAudioContext.Provider 
+        value={state}
+    >
+        {children}
+    </GameAudioContext.Provider>;
 }

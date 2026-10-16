@@ -128,7 +128,7 @@ export default function Tile({
                 }}
             >
                 {children}
-                <span style={{color: 'white'}}>{letter}</span>
+                {/*<span style={{color: 'white'}}>{letter}</span>*/}
             </div>
         </div>
         {feedbackEnabled && <>
