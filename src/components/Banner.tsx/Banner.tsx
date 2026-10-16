@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useGame } from '../Game/useGameState';
 import './Banner.scss';
 import { indexToLetter } from '../Game/useGameState';
+import { useMatter } from '../Matter';
 
 type BannerProps = {
     label: string,
@@ -20,10 +21,18 @@ export default function Banner({
         activeStageIdx
     } = useGame();
 
+    const {
+        objectCount,
+        clear
+    } = useMatter();
+
     return <div
         className={clsx(
             "banner"
         )}
+        style={{
+            visibility: activeStageIdx < 26 ? 'visible' : 'hidden'
+        }}
     >
         <div className='banner__inner'>
             <img 
@@ -41,6 +50,21 @@ export default function Banner({
                 <div className='banner__letter'>
                     {letter.toUpperCase()}
                 </div>
+            </div>
+        </div>
+        
+        {objectCount > 20 && <div 
+            className='banner__clear'
+            onClick={clear}
+        >
+            <img src="game/main/recycle.png" />
+        </div>}
+        <div 
+            className='banner__score'
+        >
+            <div>
+                <div>{(activeStageIdx+1) * 5}</div>
+                <div style={{fontSize: '0.25em'}}>Points</div>
             </div>
         </div>
     </div>

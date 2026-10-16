@@ -18,6 +18,7 @@ import TileI from "../tiles/TileI";
 import TileF from "../tiles/TileF";
 import TileL from "../tiles/TileL";
 import TileW from "../tiles/TileW";
+import TileY from "../tiles/TileY";
 import TileZ from "../tiles/TileZ";
 
 import './Game.scss';
@@ -52,7 +53,7 @@ const STAGES:StageProps[] = [
     { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny" index={21} imgSrc="game/v.jpg" /> },
     { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <TileW letter="W" name="Waveform" index={22} /> },
     { letter: "X", phrase: "Bitch lasagna", tile: <Tile letter="X" name="Xheffajell" index={23} imgSrc="game/x.jpg" /> },
-    { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <Tile letter="Y" name="Y-nstein Burger, the Diddy Movies Boss" index={24} imgSrc="game/y.jpg" /> },
+    { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <TileY letter="Y" name="You" index={24} /> },
     { letter: "Z", phrase: "Grunty's rhymes live rent-free in my head, to free yourselves, you must find", tile: <TileZ letter="Z" name=".z64 ROM file" index={25} /> },
 
     // Red herring
@@ -97,6 +98,8 @@ function GameMain() {
                         "game"
                     )}
                 >
+                    <MatterScope enabled={true} >
+
                     <header className="p-4">
                         {activeStageIdx >= 0 &&
                             <Banner 
@@ -106,7 +109,6 @@ function GameMain() {
                         }
                     </header>
                     <div className="position-relative p-4">
-                        <MatterScope enabled={true} >
                             <div className="game__main">
                                 <div 
                                     className={clsx(
@@ -136,8 +138,10 @@ function GameMain() {
                                     <Feedback />
                                 </div>
                             </div>
-                        </MatterScope>
                     </div>
+                    
+                    </MatterScope>
+
                 </div>
             </>}
             {!gameActive && 

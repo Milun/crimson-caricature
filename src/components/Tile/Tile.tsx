@@ -134,6 +134,7 @@ export default function Tile({
         {feedbackEnabled && <>
             <FeedbackItem title={name}>
                 {imgSrc && <img src={imgSrc} />}
+                {children}
             </FeedbackItem>
         </>
         }

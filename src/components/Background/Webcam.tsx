@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react";
 
-export function Webcam() {
+export function Webcam({
+    width = 1280,
+    height = 720,
+}: {
+    width?: number,
+    height?: number
+}) {
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
@@ -8,7 +14,7 @@ export function Webcam() {
         let cancelled = false;
 
         navigator.mediaDevices
-            .getUserMedia({ video: { width: 1280, height: 720 }, audio: false })
+            .getUserMedia({ video: { width: width, height: height }, audio: false })
             .then((s) => {
                 if (cancelled) { s.getTracks().forEach((t) => t.stop()); return; }
                 stream = s;

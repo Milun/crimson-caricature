@@ -16,6 +16,8 @@ type BalloonProps = {
 }
 type MatterContextProps = {
     addBalloon: (props:BalloonProps) => void;
+    clear: () => void;
+    objectCount: number;
 }
 import "./Matter.scss";
 
@@ -27,11 +29,7 @@ export function useMatter() {
     const ctx = useContext(MatterContext);
     if (!ctx) throw new Error('useMatter() must be used inside a child of a <MatterScope> component');
 
-    const { addBalloon } = ctx;
-
-    return {
-        addBalloon
-    }
+    return ctx;
 }
 export {MatterContext};
 
@@ -47,6 +45,7 @@ export function MatterScope({
 
     const matterRef = useRef<HTMLDivElement>(null);
     const engine = useRef<Engine>(null);
+    const [objectCount, setObjectCount] = useState<number>(0);
 
     const addBalloon = useCallback((props:BalloonProps) => {
 
@@ -81,9 +80,22 @@ export function MatterScope({
 
         b.angle = (Math.random() * 0.1) - 0.05;
         Composite.add(engine.current.world, [b]);
+
+        setObjectCount(objectCount+1);
+    }, [objectCount]);
+
+    // Removes all non-static objects
+    const clear = useCallback(() => {
+        if (!engine.current) return;
+        Composite.clear(engine.current.world, true);
+        setObjectCount(0);
     }, []);
 
-    const value = useMemo(() => ({ addBalloon }), [addBalloon]);
+    const value = useMemo(() => ({ 
+        addBalloon, 
+        clear,
+        objectCount
+    }), [addBalloon, clear, objectCount]);
 
     // Initial MotionJS setup.
     useEffect(() => {
