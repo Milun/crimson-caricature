@@ -174,7 +174,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     } = useGame();
 
     const {
-        playBGMs
+        playBGMs,
+        muteBGM,
+        unmuteBGM
     } = state;
 
     useEffect(() => {
@@ -191,17 +193,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
             
             if (hasStarted) return;
 
-            playBGMs([
-                'audio/bgm-1.opus',
-                'audio/bgm-2.opus',
-                'audio/bgm-3.opus',
-                'audio/bgm-4.opus',
-                'audio/bgm-5.opus',
-                'audio/bgm-8.opus',
-                'audio/bgm-9.opus',
-                'audio/bgm-10.opus',
-                'audio/bgm-6.opus',
-            ], Math.floor(activeStageIdx/3), {volume: 0.1});
+            muteBGM(0);
+            setTimeout(() => {
+                playBGMs([
+                    'audio/bgm-1.opus',
+                    'audio/bgm-2.opus',
+                    'audio/bgm-3.opus',
+                    'audio/bgm-4.opus',
+                    'audio/bgm-5.opus',
+                    'audio/bgm-8.opus',
+                    'audio/bgm-9.opus',
+                    'audio/bgm-10.opus',
+                    'audio/bgm-6.opus',
+                ], Math.floor(activeStageIdx/3), {volume: 0.1});
+                unmuteBGM(0.1, 0);
+
+            }, 1000);
 
             setHasStarted(true);
         }

@@ -89,7 +89,10 @@ function GameMain() {
     }, [gameActive]);
 
     return <>
-        <div className="game-wrapper" id="game-wrapper">
+        <div 
+            className={clsx(`game-wrapper`, activeStageIdx === 0 && 'fadein')} 
+            id="game-wrapper"
+        >
             {gameActive && <>
                 <Background />
                 <div
