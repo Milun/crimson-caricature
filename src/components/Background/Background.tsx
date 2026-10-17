@@ -48,10 +48,12 @@ export default function Background() {
     >
         <div style={{opacity: 0.6}}>
             <BackgroundItem src={'game/bgs/bg-stage.jpg'} active={true} />
+            <BackgroundItem src={'game/bgs/bg-2.jpg'} active={activeStageIdx === 4} stretch />
             <BackgroundItem src={'game/bgs/bg-mtg.jpg'} active={activeStageIdx > 7} />
             <BackgroundItem src={'game/bgs/bg-mtg2.jpg'} active={activeStageIdx > 10} />
             <BackgroundItem active={activeStageIdx > 13}><Webcam /></BackgroundItem>
-            <BackgroundItem src={'game/bgs/bg-meatloaf-scary.jpg'} active={activeStageIdx > 20} />
+            <BackgroundItem src={'game/bgs/bg-meatloaf-scary.jpg'} active={activeStageIdx > 17} />
+            <BackgroundItem src={'game/bgs/bg-1.jpg'} active={activeStageIdx > 21} stretch />
             <BackgroundItem src={'game/bgs/bg-vinny.jpg'} active={indexToLetter(activeStageIdx) === 'v'} />
             <BackgroundItem src={'game/bgs/bg-end.jpg'} active={activeStageIdx >= 26} />
         </div>
@@ -82,11 +84,13 @@ export default function Background() {
 function BackgroundItem({
     active,
     children,
-    src
+    src,
+    stretch = false
 } : {
     active: boolean, // Background fades in here.
     children?: React.ReactNode,
     src?: string,
+    stretch?: boolean
 }) {
     return <div 
         className={clsx(
@@ -94,7 +98,8 @@ function BackgroundItem({
             active && 'active'
         )}
         style={{
-            backgroundImage: src ? `url(${src})` : ''
+            backgroundImage: src ? `url(${src})` : '',
+            backgroundSize: stretch ? '100% 100%' : 'cover'
         }}
     >
         {children}

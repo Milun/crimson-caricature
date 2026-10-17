@@ -52,9 +52,9 @@ const STAGES:StageProps[] = [
     { letter: "U", phrase: "Roses are red and violets are PURPLE. Honey is sweet but not as sweet as", tile: <Tile letter="U" name="Unnaturally round individual" index={20} imgSrc="game/u.jpg" /> },
     { letter: "V", phrase: "Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny", tile: <Tile letter="V" name="Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny Vinny" index={21} imgSrc="game/v.jpg" /> },
     { letter: "W", phrase: "I promise this round will not trouble you, when you find what starts with", tile: <TileW letter="W" name="Waveform" index={22} /> },
-    { letter: "X", phrase: "Bitch lasagna", tile: <Tile letter="X" name="Xheffajell" index={23} imgSrc="game/x.jpg" /> },
-    { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <TileY letter="Y" name="You" index={24} /> },
-    { letter: "Z", phrase: "Grunty's rhymes live rent-free in my head, to free yourselves, you must find", tile: <TileZ letter="Z" name=".z64 ROM file" index={25} /> },
+    { letter: "X", phrase: "This games the one you all respects, now get the one with letter", tile: <Tile letter="X" name="Xheffajell" index={23} imgSrc="game/x.jpg" /> },
+    { letter: "Y", phrase: "You're nearly there, no need to cry. Just find the one which starts with", tile: <TileY letter="Y" name="Me" index={24} /> },
+    { letter: "Z", phrase: "Grunty's rhymes live rent-free in my head, to free yourselves, you must find", tile: <TileZ letter="Z" name="Z64 ROM file" index={25} /> },
 
     // Red herring
     { letter: "", phrase: "", tile: <Tile letter="FAKE" name="" index={99} imgSrc="game/0.jpg" /> },
