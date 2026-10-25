@@ -120,7 +120,8 @@ function GameMain() {
                                     )}
                                 >
                                     <Board
-                                        columnCount={9 - Math.floor(activeStageIdx/6)}
+                                        // Don't reduce the column count further, this is just barely enough to fix 27 tiles.
+                                        columnCount={8 - Math.floor(activeStageIdx/6)}
                                     >
                                         {STAGES.map((stage, idx) => {
                                             if (idx < activeStageIdx) return;

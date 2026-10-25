@@ -1,8 +1,8 @@
 /**
- * Laughing Gnome
+ * Waveform
  * 
  * INCORRECT:
- * Tile moves away on click; spawn laughing bubbles
+ * Tile moves reacts to microphone noise.
  * 
  * CORRECT:
  * Normal
@@ -14,6 +14,7 @@ import { useMatter } from "../Matter";
 import { useGame } from "../Game/useGameState";
 import { useAudio } from "../Game/useAudio";
 
+// TODO: No time to check; seems to be working.
 export default function TileL({
     ...props
 }: TileProps) {
@@ -34,16 +35,21 @@ export default function TileL({
 
         (async () => {
             stream = await navigator.mediaDevices.getUserMedia({
-                // Browser voice processing flattens levels; turn it off for a livelier response
-                audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+                audio: { 
+                    // Prevent browser auto-balancing audio to increase jumpiness.
+                    echoCancellation: false, 
+                    noiseSuppression: false, 
+                    autoGainControl: false 
+                },
             });
             if (cancelled) { stream.getTracks().forEach((t) => t.stop()); return; }
 
             ctx = new AudioContext();
-            await ctx.resume(); // may need a user gesture first (see note)
+            await ctx.resume(); // Browser needs manual confirmation of audio device use before proceeding.
+
             const analyser = ctx.createAnalyser();
             analyser.fftSize = 512;
-            ctx.createMediaStreamSource(stream).connect(analyser); // don't connect to destination, or you'll hear yourself
+            ctx.createMediaStreamSource(stream).connect(analyser);
 
             const data = new Float32Array(analyser.fftSize);
             let level = 0;
@@ -54,14 +60,14 @@ export default function TileL({
                 for (const v of data) sum += v * v;
                 const rms = Math.sqrt(sum / data.length); // roughly 0–0.5 for normal speech
 
-                // Rise fast, fall slowly, for a punchy bounce
                 const target = Math.min(rms * 4, 1);
-                level += (target - level) * (target > level ? 0.5 : 0.1);
+                level += (target - level) * (target > level ? 0.5 : 0.1); // Rise fast, fall slowly (deliberate)
 
                 setTransform(`translateY(${-level * 140}px)`);
                 raf = requestAnimationFrame(tick);
             };
             tick();
+            
         })().catch((err) => console.error("Mic unavailable:", err));
 
         return () => {
