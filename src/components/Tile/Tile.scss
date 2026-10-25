@@ -1,0 +1,41 @@
+/**
+ * Tile styles
+ */
+
+@keyframes tile-spin {
+    0% {transform: rotate(90deg);}
+    25% {transform: rotate(180deg);}
+    50% {transform: rotate(270deg);}
+    75% {transform: rotate(0deg);}
+}
+
+.tile {
+
+    position: relative;
+    border: var(--tile-border-width) var(--tile-border-color) solid;
+    border-radius: var(--tile-border-radius);
+    
+    box-shadow: 
+        6px 6px 0 rgba(0,0,0,0.25),
+        inset 2px 2px 0 rgba(0,0,0,0.125)
+    ;
+
+    // The tile should always be a square.
+    aspect-ratio: 1;
+    height: auto;
+
+    cursor: pointer;
+
+    &__content {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        border: 1px solid white;
+    }
+
+    &.hover-enabled:hover &__content {
+        position: absolute;
+        inset: 0;
+        animation: tile-spin 1s step-end infinite;
+    }
+}

@@ -1,0 +1,31 @@
+/**
+ * Global style settings
+ */
+
+@mixin font-face($family, $file, $weight, $style) {
+    @font-face {
+        font-family:    $family;
+        src:            url('@/assets/fonts/#{$file}.woff2') format('woff2');
+        font-weight:    $weight;
+        font-style:     $style;
+        font-display:   swap;
+    }
+}
+
+@include font-face('Neucha', 'neucha-v18-cyrillic_latin-regular',   400, normal);
+@include font-face('Cinzel', 'cinzel-decorative-v19-latin-regular', 400, normal);
+@include font-face('Cinzel', 'cinzel-decorative-v19-latin-900',     900, normal);
+
+:root {
+  --tile-border-color: crimson;
+  --tile-shadow-color: rgb(78, 6, 20);
+  --tile-border-width:  0.25rem;
+  --tile-border-radius: 0.25rem;
+}
+
+body {
+    font-family: 'Neucha', Courier, monospace;
+    overflow: hidden;
+    margin: 0;
+    background: black;
+}

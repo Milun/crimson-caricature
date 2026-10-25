@@ -1,0 +1,100 @@
+// Define letter-specific tile styles here.
+
+.tile {
+
+    // L
+    &--l {
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+}
+
+// Tile Z
+// ------------------------------------------
+#game-wrapper.tilez-anim {
+    @keyframes goldeneye {
+        0% {transform: translate(0%, 0%);}
+        5% {transform: translate(10%, 0%) rotate(2deg);}
+        15% {transform: translate(-10%, 2%) rotate(-2deg);}
+        30% {transform: translate(10%, 4%) rotate(3deg);}
+        50% {transform: translate(-10%, 8%) rotate(-3deg);}
+        75% {transform: translate(12%, 18%) rotate(5deg);}
+        100% {transform: translate(12%, 18%) rotate(5deg);}
+    }
+    animation: goldeneye 5.5s ease-in-out forwards 1;
+}
+.tilez-overlay {
+    
+    pointer-events: all;
+    position: relative;
+    height: 100%;
+
+    @keyframes tilez-wipe-a {
+        0% {transform: translateY(-140%);}
+        100% {transform: translateY(-10%);}
+    }
+    @keyframes tilez-wipe-b {
+        0% {transform: skewY(8deg);}
+        50% {transform: skewY(-8deg);}
+        100% {transform: skewY(8deg);}
+    }
+
+    &__wipe {
+        pointer-events: none;
+        opacity: 0.75;
+        animation: tilez-wipe-a 4s linear 0s 1 forwards;
+
+        &-top {
+            background: #c93939;
+            width: 100%;
+            height: 120dvh;
+            margin-bottom: -1px;
+        }
+
+        &-bottom {
+            width: 100%;
+        }
+
+        &-inner {
+            animation: tilez-wipe-b 2s ease-in-out 0s infinite forwards;
+        }
+    }
+
+    &__fade {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-family: 'Cinzel', Courier, monospace;
+        font-size: 3rem;
+        background: black;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+
+        text-align: center;
+        pointer-events: none;
+        cursor: pointer;
+
+        @keyframes tilez-fadein {
+            0% {opacity: 0; pointer-events: none;}
+            100% {opacity: 1; pointer-events: all;}
+        }
+        animation: tilez-fadein 0.5s ease 5.25s 1 forwards;
+
+        div {
+            filter: drop-shadow(0.25rem 0.25rem 0 rgba(255,255,255,0.1));
+        }
+
+        span {
+            color: #ed3123;
+            font-weight: 900;
+            font-size: 1.25em;
+            display: inline-block;
+            margin: 0 0.1em;
+            transform: skew(-15deg);
+        }
+    }
+}

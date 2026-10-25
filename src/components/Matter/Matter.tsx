@@ -1,0 +1,162 @@
+/**
+ * Allows other components to add objects to the Matter overlay.
+ */
+
+import { createContext, useContext, useState, useCallback, useEffect, useMemo, useId, useRef } from 'react';
+import { Engine, Render, Runner, Bodies, Composite } from "matter-js";
+
+type BalloonProps = {
+    src: string,
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    shape?: string,
+    scale?: number
+}
+type MatterContextProps = {
+    addBalloon: (props:BalloonProps) => void;
+    clear: () => void;
+    objectCount: number;
+}
+import "./Matter.scss";
+
+const MatterContext = createContext<MatterContextProps | null>(null);
+const MatterProvider = MatterContext.Provider;
+
+export function useMatter() {
+
+    const ctx = useContext(MatterContext);
+    if (!ctx) throw new Error('useMatter() must be used inside a child of a <MatterScope> component');
+
+    return ctx;
+}
+export {MatterContext};
+
+
+type MatterScopeProps = {
+    children: React.ReactNode;
+    enabled?: boolean
+};
+export function MatterScope({
+    children,
+    enabled = true
+}: MatterScopeProps) {
+
+    const matterRef = useRef<HTMLDivElement>(null);
+    const engine = useRef<Engine>(null);
+    const [objectCount, setObjectCount] = useState<number>(0);
+
+    const addBalloon = useCallback((props:BalloonProps) => {
+
+        const {
+            src,
+            x, y, 
+            width, height,
+            shape,
+            scale = 1
+        } = props;
+
+        // Add balloon here.
+        if (!engine.current) return;
+        const b = shape !== 'circle' ? Bodies.rectangle(x, y, width, height, {
+            render: {
+                sprite: {
+                    texture: src,
+                    xScale: scale,
+                    yScale: scale
+                }
+            }
+        }) :
+        Bodies.circle(x, y, width/2, {
+            render: {
+                sprite: {
+                    texture: src,
+                    xScale: scale,
+                    yScale: scale
+                }
+            }
+        });
+
+        b.angle = (Math.random() * 0.1) - 0.05;
+        Composite.add(engine.current.world, [b]);
+
+        setObjectCount(objectCount+1);
+    }, [objectCount]);
+
+    // Removes all non-static objects
+    const clear = useCallback(() => {
+        if (!engine.current) return;
+        Composite.clear(engine.current.world, true);
+        setObjectCount(0);
+    }, []);
+
+    const value = useMemo(() => ({ 
+        addBalloon, 
+        clear,
+        objectCount
+    }), [addBalloon, clear, objectCount]);
+
+    // Initial MotionJS setup.
+    useEffect(() => {
+
+        if (!enabled) return;
+        if (!matterRef.current) return;
+
+        const w = matterRef.current.clientWidth;
+        const h = matterRef.current.clientHeight;
+
+        // create an engine
+        engine.current = Engine.create();
+        engine.current.gravity.y = engine.current.gravity.y*-1; // Invert gravity.
+
+        // create a renderer
+        const render = Render.create({
+            element: matterRef.current,
+            engine: engine.current,
+            options: {
+                width: w,
+                height: h,
+                wireframes: false, // Enable for debugging.
+                wireframeBackground: 'transparent',
+                background: 'transparent'
+            }
+        });
+
+        // create walls
+        const ground = Bodies.rectangle(w/2, -10, w*1.25, 20, { isStatic: true });
+        const wall1 = Bodies.rectangle(-10, h/2, 20, h, { isStatic: true });
+        const wall2 = Bodies.rectangle(w+10, h/2, 20, h, { isStatic: true });
+
+        // add all of the bodies to the world
+        Composite.add(engine.current.world, [ground, wall1, wall2]);
+
+        // run the renderer
+        Render.run(render);
+
+        // create runner
+        const runner = Runner.create();
+
+        // run the engine
+        Runner.run(runner, engine.current);
+
+        // Unmount
+        return () => {
+            Render.stop(render);
+            Runner.stop(runner);
+            if (engine.current) Engine.clear(engine.current);
+            render.canvas.remove();
+        };
+    }, [enabled]);
+
+    return (
+        <MatterProvider value={value}>
+            {children}
+
+            <div
+                ref={matterRef}
+                className={"matter"}
+            />
+        </MatterProvider>
+    );
+}
